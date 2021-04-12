@@ -21,13 +21,16 @@ function generate_spec(p: any) {
   return obj
 }
 
-function generate_OAS(type: string, n: string) {
+async function generate_OAS(type: string, n: string) {
   // reused filepath
   const adapter_filepath = `packages/${type}s/${n}`
 
   // parse the package.json file
   const package_data: string = shell.cat(`${adapter_filepath}/package.json`).toString()
   const package_obj = JSON.parse(package_data)
+
+  const ea = await import(`../../../${adapter_filepath}/dist/endpoint`)
+  console.log(ea)
 
   // create the definition.json file
   const definition: OASpec = generate_spec(package_obj)

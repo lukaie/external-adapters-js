@@ -64,7 +64,7 @@ export enum Paths {
   MarketCap = 'marketcap',
 }
 
-const customParams = {
+export const customParams = {
   base: ['base', 'from', 'coin'],
   quote: ['quote', 'to', 'market'],
   coinid: false,

@@ -17,7 +17,12 @@
               "endpoint": {
                 "type": "string",
                 "default": "price",
-                "enum": ["price", "globalmarketcap", "dominance", "marketcap"]
+                "enum": [
+                  "price",
+                  "globalmarketcap",
+                  "dominance",
+                  "marketcap"
+                ]
               }
             },
             "required": {
@@ -42,50 +47,102 @@
     },
     "endpoints": {
       "globalmarketcap": {
-        "properties": ["market", "to", "quote", "coin"],
+        "properties": [
+          "market",
+          "to",
+          "quote",
+          "coin"
+        ],
         "required": [
           {
-            "oneOf": ["market", "to", "quote", "coin"]
+            "oneOf": [
+              "market",
+              "to",
+              "quote",
+              "coin"
+            ]
           }
         ]
       },
       "dominance": {
-        "properties": ["market", "to", "quote", "coin"],
+        "properties": [
+          "market",
+          "to",
+          "quote",
+          "coin"
+        ],
         "required": [
           {
-            "oneOf": ["market", "to", "quote", "coin"]
+            "oneOf": [
+              "market",
+              "to",
+              "quote",
+              "coin"
+            ]
           }
         ]
       },
       "price": {
-        "properties": ["coinid", "base", "from", "coin", "quote", "to", "market"],
+        "properties": [
+          "coinid",
+          "base",
+          "from",
+          "coin",
+          "quote",
+          "to",
+          "market"
+        ],
         "required": [
           {
             "oneOf": [
               "coinid",
               {
-                "oneOf": ["base", "from", "coin"]
+                "oneOf": [
+                  "base",
+                  "from",
+                  "coin"
+                ]
               }
             ]
           },
           {
-            "oneOf": ["quote", "to", "market"]
+            "oneOf": [
+              "quote",
+              "to",
+              "market"
+            ]
           }
         ]
       },
       "marketcap": {
-        "properties": ["coinid", "base", "from", "coin", "quote", "to", "market"],
+        "properties": [
+          "coinid",
+          "base",
+          "from",
+          "coin",
+          "quote",
+          "to",
+          "market"
+        ],
         "required": [
           {
             "oneOf": [
               "coinid",
               {
-                "oneOf": ["base", "from", "coin"]
+                "oneOf": [
+                  "base",
+                  "from",
+                  "coin"
+                ]
               }
             ]
           },
           {
-            "oneOf": ["quote", "to", "market"]
+            "oneOf": [
+              "quote",
+              "to",
+              "market"
+            ]
           }
         ]
       }

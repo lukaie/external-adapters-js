@@ -41,7 +41,7 @@ const customError = (data: any) => {
   return false
 }
 
-const customParams = {
+export const customParams = {
   market: ['quote', 'to', 'market', 'coin'],
   path: true,
 }
