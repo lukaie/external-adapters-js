@@ -30,7 +30,7 @@ import { NAME as AdapterName } from '../config'
  /**
   * @swagger
   * endpoints:
-  *  price:
+  *  marketcap:
   *    properties:
   *      - coinid
   *      - base

@@ -76,4 +76,5 @@ const ADAPTER_TYPES = ['composite', 'source', 'target', 'example']
   if (!n) return logRed('Missing second argument: name')
 
   generate_OAS(type, n)
+  shell.exec(`yarn prettier --write "./packages/${type}s/${n}/oas.json"`)
 })()

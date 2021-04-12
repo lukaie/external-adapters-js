@@ -72,6 +72,22 @@
             "oneOf": ["quote", "to", "market"]
           }
         ]
+      },
+      "marketcap": {
+        "properties": ["coinid", "base", "from", "coin", "quote", "to", "market"],
+        "required": [
+          {
+            "oneOf": [
+              "coinid",
+              {
+                "oneOf": ["base", "from", "coin"]
+              }
+            ]
+          },
+          {
+            "oneOf": ["quote", "to", "market"]
+          }
+        ]
       }
     }
   },
