@@ -51,14 +51,12 @@ jobs:
         run: GO111MODULE="on" go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
       - name: Install grizzly
         run: curl -fSL -o "grr" "https://github.com/grafana/grizzly/releases/download/v0.1.0/grr-linux-amd64" && chmod a+x "grr"
-      - run: cd grafana
       - name: Setup preview with an hour expiry
-        run: ./grr preview -e 3600 ./dashboard.jsonnet > output.txt
+        run: OUTPUT=$(./grr preview -e 3600 ./dashboard.jsonnet) > $GITHUB_ENV
         env:
           GRAFANA_URL: ${{ secrets.GRAFANA_URL }}
           GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
-      - name: Set env
-        run: echo "OUTPUT=$(cat output.txt)" >> $GITHUB_ENV
+        working-directory: ./grafana
       - uses: actions/github-script@v3
         env:
           output: ${{ env.OUTPUT }}
