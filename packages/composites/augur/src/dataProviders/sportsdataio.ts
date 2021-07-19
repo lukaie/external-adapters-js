@@ -20,6 +20,8 @@ interface NFLEvent {
   GlobalAwayTeamID: number
   GlobalHomeTeamID: number
   Status: string
+  HomeTeamMoneyLine: number
+  AwayTeamMoneyLine: number
 }
 
 interface TeamSchedule {
@@ -29,6 +31,8 @@ interface TeamSchedule {
   HomeTeamID: number
   Status: string
   PointSpread: number | null
+  HomeTeamMoneyLine: number
+  AwayTeamMoneyLine: number
 }
 
 interface NFLScores {
@@ -52,6 +56,8 @@ interface CFBGames {
   AwayTeamScore: number | null
   HomeTeamScore: number | null
   PointSpread: number | null
+  HomeTeamMoneyLine: number // TODO assuming NCAA-FB is the same as NFL
+  AwayTeamMoneyLine: number // TODO assuming NCAA-FB is the same as NFL
 }
 
 interface CommonScores {
@@ -86,6 +92,8 @@ const getSchedule = async (id: string, sport: string, season: string, exec: Exec
         HomeTeamID: event.GlobalHomeTeamID,
         Status: event.Status,
         PointSpread: event.PointSpread,
+        HomeTeamMoneyLine: event.HomeTeamMoneyLine,
+        AwayTeamMoneyLine: event.AwayTeamMoneyLine,
       }))
     }
     case 'ncaa-fb': {
@@ -95,7 +103,9 @@ const getSchedule = async (id: string, sport: string, season: string, exec: Exec
         AwayTeamID: event.GlobalAwayTeamID,
         HomeTeamID: event.GlobalHomeTeamID,
         Status: event.Status,
-        PointSpread: event.PointSpread
+        PointSpread: event.PointSpread,
+        HomeTeamMoneyLine: event.HomeTeamMoneyLine,
+        AwayTeamMoneyLine: event.AwayTeamMoneyLine,
       }))
     }
     default:
@@ -208,7 +218,8 @@ export const createTeam: Execute = async (input) => {
       homeSpread: 0, // TODO: Missing
       totalScore: 0, // TODO: Missing
       createSpread: false, // TODO: Missing
-      createTotalScore: false // TODO: Missing
+      createTotalScore: false, // TODO: Missing
+      moneylines: [event.HomeTeamMoneyLine, event.AwayTeamMoneyLine], // [home,away]
     })
   }
 
@@ -333,7 +344,8 @@ export const createFighter: Execute = async (input) => {
       continue
     }
 
-    if ((await contract.events(fight.FightId)).eventStatus !== 0) {
+    const eventDetails: {homeFighterId: ethers.BigNumber, awayFighterId: ethers.BigNumber} = await contract.events(fight.FightId)
+    if (!eventDetails.homeFighterId.eq(0) || !eventDetails.awayFighterId.eq(0)) {
       cantCreate++
       continue
     }
@@ -346,7 +358,7 @@ export const createFighter: Execute = async (input) => {
     }
 
     const moneylines = fighters
-      .map(fighter => fighter.Moneyline)
+      .map(fighter => fighter.Moneyline) as [number,number]
 
     createEvents.push({
       id: BigNumber.from(fight.FightId),

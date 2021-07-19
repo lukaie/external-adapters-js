@@ -23,6 +23,10 @@ interface TheRundownEvent {
       affiliate: {
         affiliate_id: number
       }
+      moneyline: {
+        moneyline_home: number,
+        moneyline_away: number,
+      }
       spread: {
         point_spread_home: number
       }
@@ -126,13 +130,18 @@ export const create: Execute = async (input) => {
     const [headToHeadMarket, spreadMarket, totalScoreMarket]: [ethers.BigNumber, ethers.BigNumber, ethers.BigNumber] = await contract.getEventMarkets(eventId)
 
     // only create spread and totalScore markets if lines exist; always create headToHead market
-    let homeSpread = transformSpecialNone(affiliateId && event.lines?.[affiliateId].spread.point_spread_home)
-    let totalScore = transformSpecialNone(affiliateId && event.lines?.[affiliateId].total.total_over)
-    const createSpread = homeSpread !== undefined
-    const createTotalScore = totalScore !== undefined
+    let homeSpread = transformSpecialNone(affiliateId && event.lines?.[affiliateId].spread.point_spread_home) || 0
+    let totalScore = transformSpecialNone(affiliateId && event.lines?.[affiliateId].total.total_over) || 0
+    const { createSpread, createTotalScore } = calcCreateSpreadAndTotalScore(sport, homeSpread, totalScore);
+    const moneylineHome = transformSpecialNone(affiliateId && event.lines?.[affiliateId].moneyline.moneyline_home) || 0
+    const moneylineAway = transformSpecialNone(affiliateId && event.lines?.[affiliateId].moneyline.moneyline_away) || 0
     homeSpread = homeSpread || 0
     totalScore = totalScore || 0
-    const canCreate = headToHeadMarket.isZero() || (spreadMarket.isZero() && createSpread) || (totalScoreMarket.isZero() && createTotalScore)
+
+    const canCreate = (
+      (headToHeadMarket.isZero() && moneylineHome && moneylineAway) ||
+      (spreadMarket.isZero() && createSpread) ||
+      (totalScoreMarket.isZero() && createTotalScore))
     if (!canCreate) {
       cantCreate++
       continue
@@ -146,7 +155,8 @@ export const create: Execute = async (input) => {
       homeSpread,
       totalScore,
       createSpread,
-      createTotalScore
+      createTotalScore,
+      moneylines: [moneylineHome, moneylineAway],
     })
   }
 
@@ -159,6 +169,20 @@ export const create: Execute = async (input) => {
   return Requester.success(input.id, {
     data: { result: eventsToCreate }
   })
+}
+
+function calcCreateSpreadAndTotalScore(sport: string, homeSpread: number|undefined, totalScore: number|undefined): { createSpread: boolean, createTotalScore: boolean} {
+  let createSpread = true
+  let createTotalScore = true
+
+  if (typeof homeSpread === "undefined") createSpread = false
+  if (typeof totalScore === "undefined") createTotalScore = false
+  if (sport.toUpperCase() === "MLB") {
+    createSpread = false
+    createTotalScore = false
+  }
+
+  return { createSpread, createTotalScore }
 }
 
 /**

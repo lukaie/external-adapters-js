@@ -20,6 +20,7 @@ export interface CreateTeamEvent {
   totalScore: number
   createSpread: boolean
   createTotalScore: boolean
+  moneylines: [number,number]
 }
 
 export interface CreateFighterEvent {
@@ -29,7 +30,7 @@ export interface CreateFighterEvent {
   fighterB: number
   fighterBname: string
   startTime: number
-  moneylines: number[]
+  moneylines: [number,number]
 }
 
 export const execute: ExecuteWithConfig<Config> = async (input, config) => {
@@ -92,6 +93,7 @@ const createTeam = async (jobRunID: string, sport: string, contractAddress: stri
       Math.round(event.totalScore*10),
       event.createSpread,
       event.createTotalScore,
+      event.moneylines,
       { nonce }
     ]
     try {
