@@ -447,6 +447,11 @@ yarn test $adapter/test/unit/my-specific-test.test.ts
 
 # Run a tests in watch mode, re-running tests that have code changes or dependency changes in them
 yarn test --watch $adapter/test/unit
+
+#Run integration tests on the MMA Adapter
+yarn test augur/test/integration 
+
+
 ```
 
 For more information, see the [Jest docs.](https://jestjs.io/docs/cli)
