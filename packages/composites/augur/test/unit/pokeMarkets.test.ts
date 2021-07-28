@@ -19,9 +19,8 @@ describe('execute', () => {
 
   it("RoundManagement Test", () => {
     let RoundManagement = pokeMarketsPublic.__get__("RoundManagement");
-    let roundManagement = RoundManagement(1, 1);
+    let roundManagement = new RoundManagement(1, 1);
     console.log(roundManagement.get);
-    assert(true, true);
   })
-  // it("Test ")
+  
 })

@@ -42,7 +42,8 @@ async function getNextWeekResolutionTimestamp(contract: ethers.Contract): Promis
 
   const contractNextResolutionTime = await contract.nextResolutionTime()
 
-  if (contractNextResolutionTime > nowEastern.toSeconds()) {
+  console.log(contractNextResolutionTime.toNumber(), nowEastern.toMillis() )
+  if (contractNextResolutionTime > nowEastern.toMillis()) {
     throw Error(
       `Augur: Next resolution time is in the future`
     )
