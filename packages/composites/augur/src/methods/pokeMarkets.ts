@@ -101,10 +101,10 @@ async function fetchResolutionRoundIds(
       // Here we are going to walk backward through rounds to make sure that
       // we pick the *first* update after the passed-in resolutionTime
       let roundData: RoundData = await aggregator.latestRoundData()
-
+ 
       // If any of the coins can't be resolved, don't resolve any of them we
       // may want to change this
-      if (roundData.updatedAt < resolutionTime) {
+      if (roundData.startedAt < resolutionTime) {
         throw Error(
           `Augur: cryptoMarkets - oracle update for ${coin.name} has not occured yet, resolutionTime is ${resolutionTime} but oracle was updated at ${roundData.updatedAt}`,
         )
