@@ -38,19 +38,26 @@ class RoundManagement {
 }
 
 async function getNextWeekResolutionTimestamp(contract: ethers.Contract): Promise<number> {
-  const nowEastern = DateTime.now().setZone('America/New_York')
+  const nextGoodResolutionTime = getUpcomingFriday4pmET();
 
   const contractNextResolutionTime = await contract.nextResolutionTime()
 
-  if (contractNextResolutionTime > nowEastern.toSeconds()) {
+  if (contractNextResolutionTime > nextGoodResolutionTime) {
     throw Error(
       `Augur: Next resolution time is in the future`
     )
   }
 
-  return nowEastern.plus({ week: 1 }).set({ weekday: 5, hour: 16, minute: 0, second: 0, millisecond: 0 }).toSeconds()
+  return nextGoodResolutionTime;
 }
 
+export function getUpcomingFriday4pmET(): number {
+  const nowEastern = DateTime.now().setZone("America/New_York");
+  const thisWeek = nowEastern.set({ weekday: 5, hour: 16, minute: 0, second: 0, millisecond: 0 });
+  const past = thisWeek.diff(nowEastern).milliseconds < 0;
+  const when = past ? thisWeek.plus({ week: 1 }) : thisWeek;
+  return when.toSeconds();
+}
 
 interface Coin {
   name: string
