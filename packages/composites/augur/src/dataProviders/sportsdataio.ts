@@ -33,7 +33,7 @@ interface NFLEvent {
   OverUnder: number | null
 }
 
-interface TeamSchedule {
+export interface TeamSchedule {
   Date: string
   GameID: number
   AwayTeamName: string
@@ -346,7 +346,7 @@ export const createTeam: Execute = async (input, context) => {
       awayTeamName: event.AwayTeamName,
       awayTeamId: event.AwayTeamID,
       startTime,
-      homeSpread: event.PointSpread || 0,
+      homeSpread: calcHomeSpread(event),
       totalScore: event.OverUnder || 0,
       createSpread: event.PointSpread !== null,
       createTotalScore: event.OverUnder !== null,
@@ -362,6 +362,23 @@ export const createTeam: Execute = async (input, context) => {
   return Requester.success(input.id, {
     data: { result: createEvents },
   })
+}
+
+export function calcHomeSpread(event: TeamSchedule): number {
+  if (event.HomeTeamMoneyLine === null || event.PointSpread === null) return 0
+
+  const homeFavored = event.HomeTeamMoneyLine < 0 // negative moneyline is favored
+  return homeFavored ? ensurePositive(event.PointSpread) : ensureNegative(event.PointSpread)
+}
+
+function ensureNegative(n: number): number {
+  if (n > 0) n = -n
+  return n
+}
+
+function ensurePositive(n: number): number {
+  if (n < 0) n = -n
+  return n
 }
 
 interface FightSchedule {
