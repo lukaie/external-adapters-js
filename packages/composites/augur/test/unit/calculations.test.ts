@@ -1,65 +1,51 @@
-import { calcHomeSpread, TeamSchedule } from '../../src/dataProviders/sportsdataio'
+import {
+  calcHomeSpread,
+  ensureNegative,
+  ensurePositive,
+  TeamSchedule,
+} from '../../src/dataProviders/sportsdataio'
 
 describe('calculations', () => {
   describe('calcHomeSpread', () => {
-    it('positive, favored -> pos', () => {
-      const spreadIn = 1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-        HomeTeamMoneyLine: -1, // negative means favored
+    enum r {
+      zero,
+      positive,
+      negative,
+    }
+    const testcases = [
+      // favor the most negative line
+      { spread: 1.5, home: -1, away: +1, result: 1.5 },
+      { spread: 1.5, home: -2, away: -1, result: 1.5 },
+      { spread: 1.5, home: +1, away: -1, result: -1.5 },
+      { spread: 1.5, home: -1, away: -2, result: -1.5 },
+
+      // input sign shouldn't matter
+      { spread: -1.5, home: -1, away: +1, result: 1.5 },
+      { spread: -1.5, home: -2, away: -1, result: 1.5 },
+      { spread: -1.5, home: +1, away: -1, result: -1.5 },
+      { spread: -1.5, home: -1, away: -2, result: -1.5 },
+
+      // if lines are the same then spread should be zero anyway
+      { spread: 0, home: -1, away: -1, result: 0 },
+
+      // if a field is missing then return zero
+      { spread: null, home: -1, away: -1, result: 0 },
+      { spread: 1.5, home: null, away: -1, result: 0 },
+      { spread: 1.5, home: -1, away: null, result: 0 },
+    ]
+
+    for (const testcase of testcases) {
+      const { spread, home, away, result } = testcase
+      it(`calc with lines ${home}:${away} :: ${spread} -> ${result}`, () => {
+        const event = makeFakeEvent({
+          PointSpread: spread,
+          HomeTeamMoneyLine: home,
+          AwayTeamMoneyLine: away,
+        })
+        const calc = calcHomeSpread(event)
+        expect(calc).toEqual(result)
       })
-      expect(calcHomeSpread(event)).toEqual(spreadIn)
-    })
-    it('negative, favored -> pos', () => {
-      const spreadIn = -1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-        HomeTeamMoneyLine: -1, // negative means favored
-      })
-      expect(calcHomeSpread(event)).toEqual(-spreadIn)
-    })
-    it('positive, disfavored -> neg', () => {
-      const spreadIn = 1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-        HomeTeamMoneyLine: +1, // positive means disfavored
-      })
-      expect(calcHomeSpread(event)).toEqual(-spreadIn)
-    })
-    it('negative, disfavored -> neg', () => {
-      const spreadIn = -1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-        HomeTeamMoneyLine: +1, // positive means disfavored
-      })
-      expect(calcHomeSpread(event)).toEqual(spreadIn)
-    })
-    it('pos, missing moneyline -> 0', () => {
-      const spreadIn = 1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-      })
-      expect(calcHomeSpread(event)).toEqual(0)
-    })
-    it('neg, missing moneyline -> 0', () => {
-      const spreadIn = -1.5
-      const event: TeamSchedule = makeFakeEvent({
-        PointSpread: spreadIn,
-      })
-      expect(calcHomeSpread(event)).toEqual(0)
-    })
-    it('missing spread, favored -> 0', () => {
-      const event: TeamSchedule = makeFakeEvent({
-        HomeTeamMoneyLine: -1, // negative means favored
-      })
-      expect(calcHomeSpread(event)).toEqual(0)
-    })
-    it('missing spread, disfavored -> 0', () => {
-      const event: TeamSchedule = makeFakeEvent({
-        HomeTeamMoneyLine: +1, // positive means disfavored
-      })
-      expect(calcHomeSpread(event)).toEqual(0)
-    })
+    }
   })
 })
 

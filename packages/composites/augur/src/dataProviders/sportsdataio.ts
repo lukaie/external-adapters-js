@@ -365,18 +365,26 @@ export const createTeam: Execute = async (input, context) => {
 }
 
 export function calcHomeSpread(event: TeamSchedule): number {
-  if (event.HomeTeamMoneyLine === null || event.PointSpread === null) return 0
+  const { HomeTeamMoneyLine, AwayTeamMoneyLine, PointSpread } = event
+  if (HomeTeamMoneyLine === null) return 0
+  if (AwayTeamMoneyLine === null) return 0
+  if (PointSpread === null) return 0
 
-  const homeFavored = event.HomeTeamMoneyLine < 0 // negative moneyline is favored
-  return homeFavored ? ensurePositive(event.PointSpread) : ensureNegative(event.PointSpread)
+  // If one is negative then it's favored.
+  // If both are negative then the most-negative is favored.
+  // Ergo, the smallest is favored.
+  const homeFavored = HomeTeamMoneyLine < AwayTeamMoneyLine
+
+  // Here we canculate home spread specifically, which should be positive is home is favored.
+  return homeFavored ? ensurePositive(PointSpread) : ensureNegative(PointSpread)
 }
 
-function ensureNegative(n: number): number {
+export function ensureNegative(n: number): number {
   if (n > 0) n = -n
   return n
 }
 
-function ensurePositive(n: number): number {
+export function ensurePositive(n: number): number {
   if (n < 0) n = -n
   return n
 }
