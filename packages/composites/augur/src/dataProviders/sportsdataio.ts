@@ -533,7 +533,7 @@ const eventStatus: { [status: string]: number } = {
   Scheduled: 1,
   InProgress: 0, // TODO: Clarify???
   Final: 2,
-  'F/OT': 0, // TODO: Clarify???
+  'F/OT': 2, // Final (in overtime)
   Suspended: 4, // Treat as canceled
   Postponed: 3,
   Delayed: 0, // TODO: Clarify???
