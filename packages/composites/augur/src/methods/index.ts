@@ -18,42 +18,6 @@ export * as pokeMarkets from './pokeMarkets'
 export const TEAM_SPORTS = ['mlb', 'nba', 'nfl', 'ncaa-fb']
 export const FIGHTER_SPORTS = ['mma']
 
-const ABI = [
-  {
-    inputs: [{ internalType: 'uint256', name: '_eventId', type: 'uint256' }],
-    name: 'isEventRegistered',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_eventId',
-        type: 'uint256',
-      },
-    ],
-    name: 'getEventMarkets',
-    outputs: [{ internalType: 'uint256[3]', name: '', type: 'uint256[3]' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'listResolvableEvents',
-    outputs: [
-      {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-]
-
 export const bytesMappingToHexStr = (mapping: number[], encoded: string): string => {
   const buf = Buffer.from(encoded.substr(2), 'hex')
 
