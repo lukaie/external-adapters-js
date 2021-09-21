@@ -1,14 +1,12 @@
-import { AdapterError, Requester } from '@chainlink/ea-bootstrap'
-import { assertError, assertSuccess } from '@chainlink/ea-test-helpers'
+import { Requester } from '@chainlink/ea-bootstrap'
 import { AdapterContext, AdapterRequest } from '@chainlink/types'
 import { execute } from '../../src/adapter'
 import MockDate from 'mockdate'
-import server from '../utils/data-server'
+import { makeMockDataServer } from '../utils/data-server'
 import { Server } from 'http'
 import { ethers, deployments, getNamedAccounts } from 'hardhat'
 import { Contract } from 'ethers'
 import { Config } from '../../src/config'
-import { expect, spy } from './chai-setup'
 
 describe('createMarket execute', () => {
   const jobID = '1'
@@ -22,16 +20,13 @@ describe('createMarket execute', () => {
     let config: Config
 
     before(async () => {
-      process.env.SPORTSDATAIO_MMA_STATS_API_KEY = 'key'
-      process.env.SPORTSDATAIO_API_ENDPOINT = 'http://127.0.0.1:3000'
-      // run mock server;
-      mockDataServer = server.listen(3000)
+      mockDataServer = makeMockDataServer().startServer()
 
       // deploy smart contract
       await deployments.fixture(['Sports'])
 
       // fetch the MMA market factory.
-      mmaMarketFactory = await ethers.getContract('MMAMarketFactory')
+      mmaMarketFactory = await ethers.getContract('MMAMarketFactoryV3')
 
       const { deployer } = await getNamedAccounts()
       const signer = await ethers.getSigner(deployer)

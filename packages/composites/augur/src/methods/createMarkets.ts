@@ -99,6 +99,11 @@ const createTeam = async (
   let failed = 0
   let succeeded = 0
 
+  let result = {
+    successes: [] as any[],
+    failures: [] as any[],
+  }
+
   let nonce = await config.signer.getTransactionCount()
   for (let i = 0; i < events.length; i++) {
     const event = events[i]
@@ -132,16 +137,18 @@ const createTeam = async (
       Logger.debug(`Created tx: ${tx.hash}`)
       nonce++
       succeeded++
+      result.successes.push({ event, txHash: tx.hash })
     } catch (e) {
       failed++
       Logger.error(e)
+      result.failures.push({ event, error: e })
     }
   }
 
   Logger.debug(`Augur: ${succeeded} created markets`)
   Logger.debug(`Augur: ${failed} markets failed to create`)
 
-  return Requester.success(jobRunID, {})
+  return Requester.success(jobRunID, { data: { result } })
 }
 
 const createFighter = async (

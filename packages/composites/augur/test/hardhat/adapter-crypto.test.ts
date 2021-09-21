@@ -1,4 +1,4 @@
-import { RoundManagement, CryptoMarketFactory } from '@augurproject/smart'
+import { RoundManagement, CryptoMarketFactoryV3 } from '@augurproject/smart'
 import { Logger, Requester } from '@chainlink/ea-bootstrap'
 import { BigNumber, Contract } from 'ethers'
 import { AdapterResponse } from '@chainlink/types'
@@ -9,7 +9,7 @@ import { Config } from '../../src/config'
 import { DateTime, Settings } from 'luxon'
 
 async function addRounds(
-  factory: CryptoMarketFactory,
+  factory: CryptoMarketFactoryV3,
   maxRounds: number,
   skipFirstRounds = 0,
 ): Promise<DateTime> {
@@ -73,10 +73,10 @@ describe('Augur Crypto Adapter', () => {
   })
 
   describe('add initial round', async () => {
-    let factory: CryptoMarketFactory
+    let factory: CryptoMarketFactoryV3
     let coinCount: number
     beforeEach('factories', async () => {
-      factory = (await ethers.getContract('CryptoMarketFactory')) as CryptoMarketFactory
+      factory = (await ethers.getContract('CryptoMarketFactoryV3')) as CryptoMarketFactoryV3
       const coins = await factory.getCoins()
       coinCount = coins.length - 1
       // mock luxon datetime

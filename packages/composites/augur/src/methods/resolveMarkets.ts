@@ -116,8 +116,8 @@ const resolveTeam = async (
         eventReadyToResolve[i].status,
         eventReadyToResolve[i].homeTeamId,
         eventReadyToResolve[i].awayTeamId,
-        eventReadyToResolve[i].homeScore,
-        eventReadyToResolve[i].awayScore,
+        eventReadyToResolve[i].homeScore * 10,
+        eventReadyToResolve[i].awayScore * 10,
         { nonce },
       )
       Logger.info(`Augur: Created tx: ${tx.hash}`)
