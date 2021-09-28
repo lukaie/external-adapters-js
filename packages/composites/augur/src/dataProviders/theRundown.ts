@@ -45,6 +45,7 @@ interface TheRundownEvent {
     is_away: boolean
     is_home: boolean
     team_id: number
+    name: string
   }[]
 }
 
@@ -166,9 +167,9 @@ export const create: Execute = async (input, context) => {
 
     eventsToCreate.push({
       id: eventId,
-      homeTeamName: 'Home',
+      homeTeamName: homeTeam.name,
       homeTeamId: homeTeam.team_id,
-      awayTeamName: 'Away',
+      awayTeamName: awayTeam.name,
       awayTeamId: awayTeam.team_id,
       startTime,
       homeSpread: homeSpread || 0,
