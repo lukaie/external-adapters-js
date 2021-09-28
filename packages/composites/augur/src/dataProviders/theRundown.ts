@@ -155,10 +155,9 @@ export const create: Execute = async (input, context) => {
       affiliateId && event.lines?.[affiliateId].total.total_over,
     )
 
-    const createHeadToHead = headToHeadMarket.isZero() && moneylineHome && moneylineAway
-    const createSpread = sport !== 'MLB' && spreadMarket.isZero() && homeSpread !== undefined
-    const createTotalScore =
-      sport !== 'MLB' && totalScoreMarket.isZero() && totalScore !== undefined
+    const createHeadToHead = !headToHeadMarket && moneylineHome && moneylineAway
+    const createSpread = sport !== 'MLB' && !spreadMarket && homeSpread !== undefined
+    const createTotalScore = sport !== 'MLB' && !totalScoreMarket && totalScore !== undefined
     const canCreate = createHeadToHead || createSpread || createTotalScore
     if (!canCreate) {
       cantCreate++
