@@ -46,6 +46,7 @@ interface TheRundownEvent {
     is_home: boolean
     team_id: number
     name: string
+    mascot: string
   }[]
 }
 
@@ -165,11 +166,15 @@ export const create: Execute = async (input, context) => {
       continue
     }
 
+    function makeName(team: TheRundownEvent['teams_normalized'][number]) {
+      return `${team.name} ${team.mascot}`
+    }
+
     eventsToCreate.push({
       id: eventId,
-      homeTeamName: homeTeam.name,
+      homeTeamName: makeName(homeTeam),
       homeTeamId: homeTeam.team_id,
-      awayTeamName: awayTeam.name,
+      awayTeamName: makeName(awayTeam),
       awayTeamId: awayTeam.team_id,
       startTime,
       homeSpread: homeSpread || 0,
