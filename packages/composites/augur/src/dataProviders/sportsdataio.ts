@@ -493,7 +493,11 @@ export const createFighter: Execute = async (input, context) => {
     }
 
     const event = await contract.getSportsEvent(fight.FightId)
-    if (event.eventStatus !== 0) {
+    if (event.status !== 0) {
+      Logger.debug('Augur: Skipped because of event status', {
+        fightId: fight.FightId,
+        status: event.status,
+      })
       cantCreate++
       continue
     }

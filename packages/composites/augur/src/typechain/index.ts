@@ -18,7 +18,7 @@ export { CryptoMarketFactory__factory } from './factories/CryptoMarketFactory__f
 export { FuturesMarketFactory__factory } from './factories/FuturesMarketFactory__factory'
 export { Grouped__factory } from './factories/Grouped__factory'
 export { MLBMarketFactory__factory } from './factories/MLBMarketFactory__factory'
-export { MMAMarketFactory__factory } from './factories/MMAMarketFactory__factory'
+export { MMAMarketFactoryV3__factory } from './factories/MMAMarketFactoryV3__factory'
 export { NBAMarketFactory__factory } from './factories/NBAMarketFactory__factory'
 export { NCAAFBMarketFactory__factory } from './factories/NCAAFBMarketFactory__factory'
 export { NFLMarketFactory__factory } from './factories/NFLMarketFactory__factory'
