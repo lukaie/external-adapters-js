@@ -19,10 +19,12 @@ import { Listener, Provider } from '@ethersproject/providers'
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
 import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
-interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
+interface FuturesMarketFactoryV3Interface extends ethers.utils.Interface {
   functions: {
     'accumulatedProtocolFee()': FunctionFragment
     'accumulatedSettlementFees(address)': FunctionFragment
+    'addOutcomesToGroup(uint256,string[],uint256[][])': FunctionFragment
+    'beginResolvingGroup(uint256,uint256)': FunctionFragment
     'burnShares(uint256,uint256,address)': FunctionFragment
     'calcCost(uint256)': FunctionFragment
     'calcShares(uint256)': FunctionFragment
@@ -32,14 +34,26 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
     'claimWinnings(uint256,address)': FunctionFragment
     'collateral()': FunctionFragment
     'feePot()': FunctionFragment
+    'finalizeGroup(uint256)': FunctionFragment
+    'getGroup(uint256)': FunctionFragment
+    'getGroupByIndex(uint256)': FunctionFragment
     'getMarket(uint256)': FunctionFragment
     'getOwner()': FunctionFragment
     'getRewardEndTime(uint256)': FunctionFragment
+    'getVersion()': FunctionFragment
+    'groupCount()': FunctionFragment
+    'initializeGroup(uint256,string,string,uint256,string)': FunctionFragment
     'isMarketResolved(uint256)': FunctionFragment
+    'linkNode()': FunctionFragment
+    'listOfMarketGroups(uint256)': FunctionFragment
     'marketCount()': FunctionFragment
+    'marketGroups(uint256)': FunctionFragment
     'mintShares(uint256,uint256,address)': FunctionFragment
     'protocol()': FunctionFragment
     'protocolFee()': FunctionFragment
+    'resolveMarketAsNo(uint256)': FunctionFragment
+    'resolveMarkets(uint256,uint256[])': FunctionFragment
+    'setLinkNode(address)': FunctionFragment
     'setProtocol(address,bool)': FunctionFragment
     'setProtocolFee(uint256)': FunctionFragment
     'setSettlementFee(uint256)': FunctionFragment
@@ -52,6 +66,14 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
 
   encodeFunctionData(functionFragment: 'accumulatedProtocolFee', values?: undefined): string
   encodeFunctionData(functionFragment: 'accumulatedSettlementFees', values: [string]): string
+  encodeFunctionData(
+    functionFragment: 'addOutcomesToGroup',
+    values: [BigNumberish, string[], BigNumberish[][]],
+  ): string
+  encodeFunctionData(
+    functionFragment: 'beginResolvingGroup',
+    values: [BigNumberish, BigNumberish],
+  ): string
   encodeFunctionData(
     functionFragment: 'burnShares',
     values: [BigNumberish, BigNumberish, string],
@@ -67,17 +89,35 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'claimWinnings', values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: 'collateral', values?: undefined): string
   encodeFunctionData(functionFragment: 'feePot', values?: undefined): string
+  encodeFunctionData(functionFragment: 'finalizeGroup', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getGroup', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getGroupByIndex', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'getMarket', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'getOwner', values?: undefined): string
   encodeFunctionData(functionFragment: 'getRewardEndTime', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getVersion', values?: undefined): string
+  encodeFunctionData(functionFragment: 'groupCount', values?: undefined): string
+  encodeFunctionData(
+    functionFragment: 'initializeGroup',
+    values: [BigNumberish, string, string, BigNumberish, string],
+  ): string
   encodeFunctionData(functionFragment: 'isMarketResolved', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'linkNode', values?: undefined): string
+  encodeFunctionData(functionFragment: 'listOfMarketGroups', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'marketCount', values?: undefined): string
+  encodeFunctionData(functionFragment: 'marketGroups', values: [BigNumberish]): string
   encodeFunctionData(
     functionFragment: 'mintShares',
     values: [BigNumberish, BigNumberish, string],
   ): string
   encodeFunctionData(functionFragment: 'protocol', values?: undefined): string
   encodeFunctionData(functionFragment: 'protocolFee', values?: undefined): string
+  encodeFunctionData(functionFragment: 'resolveMarketAsNo', values: [BigNumberish]): string
+  encodeFunctionData(
+    functionFragment: 'resolveMarkets',
+    values: [BigNumberish, BigNumberish[]],
+  ): string
+  encodeFunctionData(functionFragment: 'setLinkNode', values: [string]): string
   encodeFunctionData(functionFragment: 'setProtocol', values: [string, boolean]): string
   encodeFunctionData(functionFragment: 'setProtocolFee', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'setSettlementFee', values: [BigNumberish]): string
@@ -89,6 +129,8 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
 
   decodeFunctionResult(functionFragment: 'accumulatedProtocolFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'accumulatedSettlementFees', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'addOutcomesToGroup', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'beginResolvingGroup', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'burnShares', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'calcCost', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'calcShares', data: BytesLike): Result
@@ -98,14 +140,26 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'claimWinnings', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'collateral', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feePot', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'finalizeGroup', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getGroup', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getGroupByIndex', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getMarket', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getOwner', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getRewardEndTime', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getVersion', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'groupCount', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'initializeGroup', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'isMarketResolved', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'linkNode', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'listOfMarketGroups', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'marketCount', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'marketGroups', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'mintShares', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'protocol', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'protocolFee', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'resolveMarketAsNo', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'resolveMarkets', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'setLinkNode', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setProtocol', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setProtocolFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setSettlementFee', data: BytesLike): Result
@@ -116,6 +170,11 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
 
   events: {
+    'GroupCreated(uint256,uint256,uint256,string)': EventFragment
+    'GroupFinalizing(uint256,uint256)': EventFragment
+    'GroupMarketAdded(uint256,uint256,string)': EventFragment
+    'GroupResolved(uint256,bool)': EventFragment
+    'LinkNodeChanged(address)': EventFragment
     'MarketActivated(uint256)': EventFragment
     'MarketCreated(uint256,string[],uint256[])': EventFragment
     'MarketResolved(uint256,address,uint256,string)': EventFragment
@@ -124,6 +183,11 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
     'WinningsClaimed(uint256,address,uint256,string,uint256,uint256,uint256,address)': EventFragment
   }
 
+  getEvent(nameOrSignatureOrTopic: 'GroupCreated'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'GroupFinalizing'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'GroupMarketAdded'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'GroupResolved'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'LinkNodeChanged'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketActivated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketCreated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketResolved'): EventFragment
@@ -132,7 +196,7 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'WinningsClaimed'): EventFragment
 }
 
-export class AbstractMarketFactoryV3 extends Contract {
+export class FuturesMarketFactoryV3 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
@@ -173,7 +237,7 @@ export class AbstractMarketFactoryV3 extends Contract {
     toBlock?: string | number | undefined,
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: AbstractMarketFactoryV3Interface
+  interface: FuturesMarketFactoryV3Interface
 
   functions: {
     accumulatedProtocolFee(overrides?: CallOverrides): Promise<[BigNumber]>
@@ -186,6 +250,32 @@ export class AbstractMarketFactoryV3 extends Contract {
       arg0: string,
       overrides?: CallOverrides,
     ): Promise<[BigNumber]>
+
+    addOutcomesToGroup(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'addOutcomesToGroup(uint256,string[],uint256[][])'(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    beginResolvingGroup(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'beginResolvingGroup(uint256,uint256)'(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     burnShares(
       _id: BigNumberish,
@@ -262,6 +352,140 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'feePot()'(overrides?: CallOverrides): Promise<[string]>
 
+    finalizeGroup(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'finalizeGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    getGroup(
+      _groupId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+      ]
+    >
+
+    'getGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+      ]
+    >
+
+    getGroupByIndex(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _group: [
+          number,
+          string,
+          BigNumber[],
+          string[],
+          BigNumber,
+          string,
+          BigNumber,
+          string,
+          BigNumber,
+        ] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        }
+        _groupId: BigNumber
+      }
+    >
+
+    'getGroupByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _group: [
+          number,
+          string,
+          BigNumber[],
+          string[],
+          BigNumber,
+          string,
+          BigNumber,
+          string,
+          BigNumber,
+        ] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        }
+        _groupId: BigNumber
+      }
+    >
+
     getMarket(
       _id: BigNumberish,
       overrides?: CallOverrides,
@@ -332,20 +556,87 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'getOwner()'(overrides?: CallOverrides): Promise<[string]>
 
-    getRewardEndTime(_marketId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>
+    getRewardEndTime(_eventId: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>
 
     'getRewardEndTime(uint256)'(
-      _marketId: BigNumberish,
+      _eventId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<[BigNumber]>
+
+    getVersion(overrides?: CallOverrides): Promise<[string]>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<[string]>
+
+    groupCount(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    'groupCount()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    initializeGroup(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'initializeGroup(uint256,string,string,uint256,string)'(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>
 
+    linkNode(overrides?: CallOverrides): Promise<[string]>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<[string]>
+
+    listOfMarketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>
+
+    'listOfMarketGroups(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber]>
+
     marketCount(overrides?: CallOverrides): Promise<[BigNumber]>
 
     'marketCount()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    marketGroups(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
+
+    'marketGroups(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
 
     mintShares(
       _id: BigNumberish,
@@ -368,6 +659,38 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<[BigNumber]>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    resolveMarketAsNo(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'resolveMarketAsNo(uint256)'(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    resolveMarkets(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'resolveMarkets(uint256,uint256[])'(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     setProtocol(
       _newProtocol: string,
@@ -442,6 +765,32 @@ export class AbstractMarketFactoryV3 extends Contract {
 
   'accumulatedSettlementFees(address)'(arg0: string, overrides?: CallOverrides): Promise<BigNumber>
 
+  addOutcomesToGroup(
+    _groupId: BigNumberish,
+    _marketNames: string[],
+    _odds: BigNumberish[][],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'addOutcomesToGroup(uint256,string[],uint256[][])'(
+    _groupId: BigNumberish,
+    _marketNames: string[],
+    _odds: BigNumberish[][],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  beginResolvingGroup(
+    _groupId: BigNumberish,
+    _winningMarketIndex: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'beginResolvingGroup(uint256,uint256)'(
+    _groupId: BigNumberish,
+    _winningMarketIndex: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
   burnShares(
     _id: BigNumberish,
     _sharesToBurn: BigNumberish,
@@ -514,6 +863,136 @@ export class AbstractMarketFactoryV3 extends Contract {
 
   'feePot()'(overrides?: CallOverrides): Promise<string>
 
+  finalizeGroup(
+    _groupId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'finalizeGroup(uint256)'(
+    _groupId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  getGroup(
+    _groupId: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+      status: number
+      name: string
+      markets: BigNumber[]
+      marketNames: string[]
+      invalidMarket: BigNumber
+      invalidMarketName: string
+      endTime: BigNumber
+      category: string
+      winningMarketIndex: BigNumber
+    }
+  >
+
+  'getGroup(uint256)'(
+    _groupId: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+      status: number
+      name: string
+      markets: BigNumber[]
+      marketNames: string[]
+      invalidMarket: BigNumber
+      invalidMarketName: string
+      endTime: BigNumber
+      category: string
+      winningMarketIndex: BigNumber
+    }
+  >
+
+  getGroupByIndex(
+    _index: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      },
+      BigNumber,
+    ] & {
+      _group: [
+        number,
+        string,
+        BigNumber[],
+        string[],
+        BigNumber,
+        string,
+        BigNumber,
+        string,
+        BigNumber,
+      ] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+      _groupId: BigNumber
+    }
+  >
+
+  'getGroupByIndex(uint256)'(
+    _index: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      },
+      BigNumber,
+    ] & {
+      _group: [
+        number,
+        string,
+        BigNumber[],
+        string[],
+        BigNumber,
+        string,
+        BigNumber,
+        string,
+        BigNumber,
+      ] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+      _groupId: BigNumber
+    }
+  >
+
   getMarket(
     _id: BigNumberish,
     overrides?: CallOverrides,
@@ -580,20 +1059,81 @@ export class AbstractMarketFactoryV3 extends Contract {
 
   'getOwner()'(overrides?: CallOverrides): Promise<string>
 
-  getRewardEndTime(_marketId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+  getRewardEndTime(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-  'getRewardEndTime(uint256)'(
-    _marketId: BigNumberish,
-    overrides?: CallOverrides,
-  ): Promise<BigNumber>
+  'getRewardEndTime(uint256)'(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+  getVersion(overrides?: CallOverrides): Promise<string>
+
+  'getVersion()'(overrides?: CallOverrides): Promise<string>
+
+  groupCount(overrides?: CallOverrides): Promise<BigNumber>
+
+  'groupCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  initializeGroup(
+    _groupId: BigNumberish,
+    _groupName: string,
+    _invalidMarketName: string,
+    _endTime: BigNumberish,
+    _category: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'initializeGroup(uint256,string,string,uint256,string)'(
+    _groupId: BigNumberish,
+    _groupName: string,
+    _invalidMarketName: string,
+    _endTime: BigNumberish,
+    _category: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
+  linkNode(overrides?: CallOverrides): Promise<string>
+
+  'linkNode()'(overrides?: CallOverrides): Promise<string>
+
+  listOfMarketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+  'listOfMarketGroups(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
   marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
   'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  marketGroups(
+    arg0: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+      status: number
+      name: string
+      invalidMarket: BigNumber
+      invalidMarketName: string
+      endTime: BigNumber
+      category: string
+      winningMarketIndex: BigNumber
+    }
+  >
+
+  'marketGroups(uint256)'(
+    arg0: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+      status: number
+      name: string
+      invalidMarket: BigNumber
+      invalidMarketName: string
+      endTime: BigNumber
+      category: string
+      winningMarketIndex: BigNumber
+    }
+  >
 
   mintShares(
     _id: BigNumberish,
@@ -616,6 +1156,38 @@ export class AbstractMarketFactoryV3 extends Contract {
   protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
   'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  resolveMarketAsNo(
+    _marketId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'resolveMarketAsNo(uint256)'(
+    _marketId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  resolveMarkets(
+    _groupId: BigNumberish,
+    _marketIndexes: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'resolveMarkets(uint256,uint256[])'(
+    _groupId: BigNumberish,
+    _marketIndexes: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  setLinkNode(
+    _newLinkNode: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'setLinkNode(address)'(
+    _newLinkNode: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   setProtocol(
     _newProtocol: string,
@@ -693,6 +1265,32 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<BigNumber>
 
+    addOutcomesToGroup(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'addOutcomesToGroup(uint256,string[],uint256[][])'(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    beginResolvingGroup(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'beginResolvingGroup(uint256,uint256)'(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
     burnShares(
       _id: BigNumberish,
       _sharesToBurn: BigNumberish,
@@ -757,6 +1355,130 @@ export class AbstractMarketFactoryV3 extends Contract {
     feePot(overrides?: CallOverrides): Promise<string>
 
     'feePot()'(overrides?: CallOverrides): Promise<string>
+
+    finalizeGroup(_groupId: BigNumberish, overrides?: CallOverrides): Promise<void>
+
+    'finalizeGroup(uint256)'(_groupId: BigNumberish, overrides?: CallOverrides): Promise<void>
+
+    getGroup(
+      _groupId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
+
+    'getGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        markets: BigNumber[]
+        marketNames: string[]
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
+
+    getGroupByIndex(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _group: [
+          number,
+          string,
+          BigNumber[],
+          string[],
+          BigNumber,
+          string,
+          BigNumber,
+          string,
+          BigNumber,
+        ] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        }
+        _groupId: BigNumber
+      }
+    >
+
+    'getGroupByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [number, string, BigNumber[], string[], BigNumber, string, BigNumber, string, BigNumber] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _group: [
+          number,
+          string,
+          BigNumber[],
+          string[],
+          BigNumber,
+          string,
+          BigNumber,
+          string,
+          BigNumber,
+        ] & {
+          status: number
+          name: string
+          markets: BigNumber[]
+          marketNames: string[]
+          invalidMarket: BigNumber
+          invalidMarketName: string
+          endTime: BigNumber
+          category: string
+          winningMarketIndex: BigNumber
+        }
+        _groupId: BigNumber
+      }
+    >
 
     getMarket(
       _id: BigNumberish,
@@ -824,20 +1546,84 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'getOwner()'(overrides?: CallOverrides): Promise<string>
 
-    getRewardEndTime(_marketId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    getRewardEndTime(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'getRewardEndTime(uint256)'(
-      _marketId: BigNumberish,
+      _eventId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<BigNumber>
+
+    getVersion(overrides?: CallOverrides): Promise<string>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<string>
+
+    groupCount(overrides?: CallOverrides): Promise<BigNumber>
+
+    'groupCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    initializeGroup(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'initializeGroup(uint256,string,string,uint256,string)'(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: CallOverrides,
+    ): Promise<void>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
+    linkNode(overrides?: CallOverrides): Promise<string>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<string>
+
+    listOfMarketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'listOfMarketGroups(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
     marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
     'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    marketGroups(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
+
+    'marketGroups(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, string, BigNumber, string, BigNumber, string, BigNumber] & {
+        status: number
+        name: string
+        invalidMarket: BigNumber
+        invalidMarketName: string
+        endTime: BigNumber
+        category: string
+        winningMarketIndex: BigNumber
+      }
+    >
 
     mintShares(
       _id: BigNumberish,
@@ -860,6 +1646,26 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    resolveMarketAsNo(_marketId: BigNumberish, overrides?: CallOverrides): Promise<void>
+
+    'resolveMarketAsNo(uint256)'(_marketId: BigNumberish, overrides?: CallOverrides): Promise<void>
+
+    resolveMarkets(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'resolveMarkets(uint256,uint256[])'(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    setLinkNode(_newLinkNode: string, overrides?: CallOverrides): Promise<void>
+
+    'setLinkNode(address)'(_newLinkNode: string, overrides?: CallOverrides): Promise<void>
 
     setProtocol(
       _newProtocol: string,
@@ -903,6 +1709,45 @@ export class AbstractMarketFactoryV3 extends Contract {
   }
 
   filters: {
+    GroupCreated(
+      id: BigNumberish | null,
+      endTime: null,
+      invalidMarketId: null,
+      invalidMarketName: null,
+    ): TypedEventFilter<
+      [BigNumber, BigNumber, BigNumber, string],
+      {
+        id: BigNumber
+        endTime: BigNumber
+        invalidMarketId: BigNumber
+        invalidMarketName: string
+      }
+    >
+
+    GroupFinalizing(
+      groupId: BigNumberish | null,
+      winningMarketIndex: null,
+    ): TypedEventFilter<
+      [BigNumber, BigNumber],
+      { groupId: BigNumber; winningMarketIndex: BigNumber }
+    >
+
+    GroupMarketAdded(
+      groupId: BigNumberish | null,
+      marketId: null,
+      marketName: null,
+    ): TypedEventFilter<
+      [BigNumber, BigNumber, string],
+      { groupId: BigNumber; marketId: BigNumber; marketName: string }
+    >
+
+    GroupResolved(
+      id: BigNumberish | null,
+      valid: null,
+    ): TypedEventFilter<[BigNumber, boolean], { id: BigNumber; valid: boolean }>
+
+    LinkNodeChanged(newLinkNode: null): TypedEventFilter<[string], { newLinkNode: string }>
+
     MarketActivated(id: null): TypedEventFilter<[BigNumber], { id: BigNumber }>
 
     MarketCreated(
@@ -983,6 +1828,32 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<BigNumber>
 
+    addOutcomesToGroup(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'addOutcomesToGroup(uint256,string[],uint256[][])'(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    beginResolvingGroup(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'beginResolvingGroup(uint256,uint256)'(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
     burnShares(
       _id: BigNumberish,
       _sharesToBurn: BigNumberish,
@@ -1058,6 +1929,24 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'feePot()'(overrides?: CallOverrides): Promise<BigNumber>
 
+    finalizeGroup(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'finalizeGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    getGroup(_groupId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getGroup(uint256)'(_groupId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    getGroupByIndex(_index: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getGroupByIndex(uint256)'(_index: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'getMarket(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
@@ -1066,20 +1955,58 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'getOwner()'(overrides?: CallOverrides): Promise<BigNumber>
 
-    getRewardEndTime(_marketId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+    getRewardEndTime(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'getRewardEndTime(uint256)'(
-      _marketId: BigNumberish,
+      _eventId: BigNumberish,
       overrides?: CallOverrides,
+    ): Promise<BigNumber>
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    groupCount(overrides?: CallOverrides): Promise<BigNumber>
+
+    'groupCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    initializeGroup(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'initializeGroup(uint256,string,string,uint256,string)'(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
+    linkNode(overrides?: CallOverrides): Promise<BigNumber>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    listOfMarketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'listOfMarketGroups(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
     marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
     'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    marketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'marketGroups(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     mintShares(
       _id: BigNumberish,
@@ -1102,6 +2029,38 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    resolveMarketAsNo(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'resolveMarketAsNo(uint256)'(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    resolveMarkets(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'resolveMarkets(uint256,uint256[])'(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
     setProtocol(
       _newProtocol: string,
@@ -1181,6 +2140,32 @@ export class AbstractMarketFactoryV3 extends Contract {
     'accumulatedSettlementFees(address)'(
       arg0: string,
       overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    addOutcomesToGroup(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'addOutcomesToGroup(uint256,string[],uint256[][])'(
+      _groupId: BigNumberish,
+      _marketNames: string[],
+      _odds: BigNumberish[][],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    beginResolvingGroup(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'beginResolvingGroup(uint256,uint256)'(
+      _groupId: BigNumberish,
+      _winningMarketIndex: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>
 
     burnShares(
@@ -1264,6 +2249,30 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'feePot()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
+    finalizeGroup(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'finalizeGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    getGroup(_groupId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getGroup(uint256)'(
+      _groupId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    getGroupByIndex(_index: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getGroupByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'getMarket(uint256)'(
@@ -1276,13 +2285,39 @@ export class AbstractMarketFactoryV3 extends Contract {
     'getOwner()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     getRewardEndTime(
-      _marketId: BigNumberish,
+      _eventId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
 
     'getRewardEndTime(uint256)'(
-      _marketId: BigNumberish,
+      _eventId: BigNumberish,
       overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    groupCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'groupCount()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    initializeGroup(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'initializeGroup(uint256,string,string,uint256,string)'(
+      _groupId: BigNumberish,
+      _groupName: string,
+      _invalidMarketName: string,
+      _endTime: BigNumberish,
+      _category: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
@@ -1292,9 +2327,27 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
 
+    linkNode(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    listOfMarketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'listOfMarketGroups(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
     marketCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'marketCount()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    marketGroups(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'marketGroups(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     mintShares(
       _id: BigNumberish,
@@ -1317,6 +2370,38 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    resolveMarketAsNo(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'resolveMarketAsNo(uint256)'(
+      _marketId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    resolveMarkets(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'resolveMarkets(uint256,uint256[])'(
+      _groupId: BigNumberish,
+      _marketIndexes: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     setProtocol(
       _newProtocol: string,

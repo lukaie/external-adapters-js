@@ -19,7 +19,7 @@ import { Listener, Provider } from '@ethersproject/providers'
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
 import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
-interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
+interface TrustedMarketFactoryV3Interface extends ethers.utils.Interface {
   functions: {
     'accumulatedProtocolFee()': FunctionFragment
     'accumulatedSettlementFees(address)': FunctionFragment
@@ -31,10 +31,13 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
     'claimSettlementFees(address)': FunctionFragment
     'claimWinnings(uint256,address)': FunctionFragment
     'collateral()': FunctionFragment
+    'createMarket(address,string,string[],uint256[])': FunctionFragment
     'feePot()': FunctionFragment
     'getMarket(uint256)': FunctionFragment
+    'getMarketDetails(uint256)': FunctionFragment
     'getOwner()': FunctionFragment
     'getRewardEndTime(uint256)': FunctionFragment
+    'getVersion()': FunctionFragment
     'isMarketResolved(uint256)': FunctionFragment
     'marketCount()': FunctionFragment
     'mintShares(uint256,uint256,address)': FunctionFragment
@@ -48,6 +51,7 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
     'shareFactor()': FunctionFragment
     'stakerFee()': FunctionFragment
     'transferOwnership(address)': FunctionFragment
+    'trustedResolveMarket(uint256,uint256)': FunctionFragment
   }
 
   encodeFunctionData(functionFragment: 'accumulatedProtocolFee', values?: undefined): string
@@ -66,10 +70,16 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'claimSettlementFees', values: [string]): string
   encodeFunctionData(functionFragment: 'claimWinnings', values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: 'collateral', values?: undefined): string
+  encodeFunctionData(
+    functionFragment: 'createMarket',
+    values: [string, string, string[], BigNumberish[]],
+  ): string
   encodeFunctionData(functionFragment: 'feePot', values?: undefined): string
   encodeFunctionData(functionFragment: 'getMarket', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getMarketDetails', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'getOwner', values?: undefined): string
   encodeFunctionData(functionFragment: 'getRewardEndTime', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getVersion', values?: undefined): string
   encodeFunctionData(functionFragment: 'isMarketResolved', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'marketCount', values?: undefined): string
   encodeFunctionData(
@@ -86,6 +96,10 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'shareFactor', values?: undefined): string
   encodeFunctionData(functionFragment: 'stakerFee', values?: undefined): string
   encodeFunctionData(functionFragment: 'transferOwnership', values: [string]): string
+  encodeFunctionData(
+    functionFragment: 'trustedResolveMarket',
+    values: [BigNumberish, BigNumberish],
+  ): string
 
   decodeFunctionResult(functionFragment: 'accumulatedProtocolFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'accumulatedSettlementFees', data: BytesLike): Result
@@ -97,10 +111,13 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'claimSettlementFees', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'claimWinnings', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'collateral', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'createMarket', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feePot', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getMarket', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getMarketDetails', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getOwner', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getRewardEndTime', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getVersion', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'isMarketResolved', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'marketCount', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'mintShares', data: BytesLike): Result
@@ -114,6 +131,7 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'shareFactor', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'stakerFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'trustedResolveMarket', data: BytesLike): Result
 
   events: {
     'MarketActivated(uint256)': EventFragment
@@ -132,7 +150,7 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'WinningsClaimed'): EventFragment
 }
 
-export class AbstractMarketFactoryV3 extends Contract {
+export class TrustedMarketFactoryV3 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
@@ -173,7 +191,7 @@ export class AbstractMarketFactoryV3 extends Contract {
     toBlock?: string | number | undefined,
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: AbstractMarketFactoryV3Interface
+  interface: TrustedMarketFactoryV3Interface
 
   functions: {
     accumulatedProtocolFee(overrides?: CallOverrides): Promise<[BigNumber]>
@@ -258,6 +276,22 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<[string]>
 
+    createMarket(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'createMarket(address,string,string[],uint256[])'(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
     feePot(overrides?: CallOverrides): Promise<[string]>
 
     'feePot()'(overrides?: CallOverrides): Promise<[string]>
@@ -328,6 +362,16 @@ export class AbstractMarketFactoryV3 extends Contract {
       ]
     >
 
+    getMarketDetails(
+      _id: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[[string] & { description: string }]>
+
+    'getMarketDetails(uint256)'(
+      _id: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[[string] & { description: string }]>
+
     getOwner(overrides?: CallOverrides): Promise<[string]>
 
     'getOwner()'(overrides?: CallOverrides): Promise<[string]>
@@ -338,6 +382,10 @@ export class AbstractMarketFactoryV3 extends Contract {
       _marketId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<[BigNumber]>
+
+    getVersion(overrides?: CallOverrides): Promise<[string]>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<[string]>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>
 
@@ -432,6 +480,18 @@ export class AbstractMarketFactoryV3 extends Contract {
       _newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>
+
+    trustedResolveMarket(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'trustedResolveMarket(uint256,uint256)'(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
   }
 
   accumulatedProtocolFee(overrides?: CallOverrides): Promise<BigNumber>
@@ -510,6 +570,22 @@ export class AbstractMarketFactoryV3 extends Contract {
 
   'collateral()'(overrides?: CallOverrides): Promise<string>
 
+  createMarket(
+    _creator: string,
+    _description: string,
+    _names: string[],
+    _odds: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'createMarket(address,string,string[],uint256[])'(
+    _creator: string,
+    _description: string,
+    _names: string[],
+    _odds: BigNumberish[],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
   feePot(overrides?: CallOverrides): Promise<string>
 
   'feePot()'(overrides?: CallOverrides): Promise<string>
@@ -576,6 +652,16 @@ export class AbstractMarketFactoryV3 extends Contract {
     }
   >
 
+  getMarketDetails(
+    _id: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<[string] & { description: string }>
+
+  'getMarketDetails(uint256)'(
+    _id: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<[string] & { description: string }>
+
   getOwner(overrides?: CallOverrides): Promise<string>
 
   'getOwner()'(overrides?: CallOverrides): Promise<string>
@@ -586,6 +672,10 @@ export class AbstractMarketFactoryV3 extends Contract {
     _marketId: BigNumberish,
     overrides?: CallOverrides,
   ): Promise<BigNumber>
+
+  getVersion(overrides?: CallOverrides): Promise<string>
+
+  'getVersion()'(overrides?: CallOverrides): Promise<string>
 
   isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
@@ -681,6 +771,18 @@ export class AbstractMarketFactoryV3 extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>
 
+  trustedResolveMarket(
+    _id: BigNumberish,
+    _winningOutcome: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'trustedResolveMarket(uint256,uint256)'(
+    _id: BigNumberish,
+    _winningOutcome: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
   callStatic: {
     accumulatedProtocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -754,6 +856,22 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<string>
 
+    createMarket(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
+
+    'createMarket(address,string,string[],uint256[])'(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
+
     feePot(overrides?: CallOverrides): Promise<string>
 
     'feePot()'(overrides?: CallOverrides): Promise<string>
@@ -820,6 +938,16 @@ export class AbstractMarketFactoryV3 extends Contract {
       }
     >
 
+    getMarketDetails(
+      _id: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[string] & { description: string }>
+
+    'getMarketDetails(uint256)'(
+      _id: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[string] & { description: string }>
+
     getOwner(overrides?: CallOverrides): Promise<string>
 
     'getOwner()'(overrides?: CallOverrides): Promise<string>
@@ -830,6 +958,10 @@ export class AbstractMarketFactoryV3 extends Contract {
       _marketId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<BigNumber>
+
+    getVersion(overrides?: CallOverrides): Promise<string>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<string>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
@@ -900,6 +1032,18 @@ export class AbstractMarketFactoryV3 extends Contract {
     transferOwnership(_newOwner: string, overrides?: CallOverrides): Promise<boolean>
 
     'transferOwnership(address)'(_newOwner: string, overrides?: CallOverrides): Promise<boolean>
+
+    trustedResolveMarket(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'trustedResolveMarket(uint256,uint256)'(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
   }
 
   filters: {
@@ -1054,6 +1198,22 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<BigNumber>
 
+    createMarket(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'createMarket(address,string,string[],uint256[])'(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
     feePot(overrides?: CallOverrides): Promise<BigNumber>
 
     'feePot()'(overrides?: CallOverrides): Promise<BigNumber>
@@ -1061,6 +1221,10 @@ export class AbstractMarketFactoryV3 extends Contract {
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'getMarket(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    getMarketDetails(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getMarketDetails(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     getOwner(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -1072,6 +1236,10 @@ export class AbstractMarketFactoryV3 extends Contract {
       _marketId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<BigNumber>
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<BigNumber>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -1164,6 +1332,18 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'transferOwnership(address)'(
       _newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    trustedResolveMarket(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'trustedResolveMarket(uint256,uint256)'(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>
   }
@@ -1260,6 +1440,22 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
+    createMarket(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'createMarket(address,string,string[],uint256[])'(
+      _creator: string,
+      _description: string,
+      _names: string[],
+      _odds: BigNumberish[],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
     feePot(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'feePot()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
@@ -1267,6 +1463,13 @@ export class AbstractMarketFactoryV3 extends Contract {
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'getMarket(uint256)'(
+      _id: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    getMarketDetails(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getMarketDetails(uint256)'(
       _id: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
@@ -1284,6 +1487,10 @@ export class AbstractMarketFactoryV3 extends Contract {
       _marketId: BigNumberish,
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
+
+    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -1379,6 +1586,18 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'transferOwnership(address)'(
       _newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    trustedResolveMarket(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'trustedResolveMarket(uint256,uint256)'(
+      _id: BigNumberish,
+      _winningOutcome: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>
   }

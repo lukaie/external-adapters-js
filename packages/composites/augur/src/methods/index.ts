@@ -1,15 +1,15 @@
 import { ethers } from 'ethers'
 import {
-  CryptoMarketFactory,
-  CryptoMarketFactory__factory,
-  MLBMarketFactory,
-  MLBMarketFactory__factory,
-  MMAMarketFactory,
+  CryptoMarketFactoryV3,
+  CryptoMarketFactoryV3__factory,
+  MLBMarketFactoryV3,
+  MLBMarketFactoryV3__factory,
+  MMAMarketFactoryV3,
   MMAMarketFactoryV3__factory,
-  NBAMarketFactory,
-  NBAMarketFactory__factory,
-  NFLMarketFactory,
-  NFLMarketFactory__factory,
+  NBAMarketFactoryV3,
+  NBAMarketFactoryV3__factory,
+  NFLMarketFactoryV3,
+  NFLMarketFactoryV3__factory,
 } from '../typechain'
 
 export * as resolveMarkets from './resolveMarkets'
@@ -47,30 +47,42 @@ export function getContract(
   address: string,
   signer: ethers.Signer,
 ) {
-  if (identifier === 'nfl') return NFLMarketFactory__factory.connect(address, signer)
-  if (identifier === 'nba') return NBAMarketFactory__factory.connect(address, signer)
-  if (identifier === 'mlb') return MLBMarketFactory__factory.connect(address, signer)
+  if (identifier === 'nfl') return NFLMarketFactoryV3__factory.connect(address, signer)
+  if (identifier === 'nba') return NBAMarketFactoryV3__factory.connect(address, signer)
+  if (identifier === 'mlb') return MLBMarketFactoryV3__factory.connect(address, signer)
   if (identifier === 'mma') return MMAMarketFactoryV3__factory.connect(address, signer)
-  if (identifier === 'crypto') return CryptoMarketFactory__factory.connect(address, signer)
+  if (identifier === 'crypto') return CryptoMarketFactoryV3__factory.connect(address, signer)
   else throw Error(`Unsupported identifier ${identifier}`)
 }
 
-export function isNFL(contract: ethers.Contract, identifier: string): contract is NFLMarketFactory {
+export function isNFL(
+  contract: ethers.Contract,
+  identifier: string,
+): contract is NFLMarketFactoryV3 {
   contract
   return identifier === 'nfl'
 }
 
-export function isNBA(contract: ethers.Contract, identifier: string): contract is NBAMarketFactory {
+export function isNBA(
+  contract: ethers.Contract,
+  identifier: string,
+): contract is NBAMarketFactoryV3 {
   contract
   return identifier === 'nba'
 }
 
-export function isMLB(contract: ethers.Contract, identifier: string): contract is MLBMarketFactory {
+export function isMLB(
+  contract: ethers.Contract,
+  identifier: string,
+): contract is MLBMarketFactoryV3 {
   contract
   return identifier === 'mlb'
 }
 
-export function isMMA(contract: ethers.Contract, identifier: string): contract is MMAMarketFactory {
+export function isMMA(
+  contract: ethers.Contract,
+  identifier: string,
+): contract is MMAMarketFactoryV3 {
   contract
   return identifier === 'mma'
 }
@@ -78,7 +90,7 @@ export function isMMA(contract: ethers.Contract, identifier: string): contract i
 export function isCrypto(
   contract: ethers.Contract,
   identifier: ContractIdentifier,
-): contract is CryptoMarketFactory {
+): contract is CryptoMarketFactoryV3 {
   contract
   return identifier === 'crypto'
 }

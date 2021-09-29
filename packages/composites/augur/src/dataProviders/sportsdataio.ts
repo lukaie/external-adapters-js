@@ -5,7 +5,7 @@ import { BigNumber, ethers } from 'ethers'
 import { CreateFighterEvent, CreateTeamEvent } from '../methods/createMarkets'
 import { ResolveFight, ResolveTeam } from '../methods/resolveMarkets'
 import { DateTime } from 'luxon'
-import { NFLMarketFactory } from '../typechain'
+import { NFLMarketFactoryV3 } from '../typechain'
 
 export const SPORTS_SUPPORTED = ['nfl', 'ncaa-fb', 'mma']
 
@@ -299,7 +299,7 @@ export const createTeam: Execute = async (input, context) => {
   const daysInAdvance = validator.validated.data.daysInAdvance
   const startBuffer = validator.validated.data.startBuffer
 
-  const contract: NFLMarketFactory = validator.validated.data.contract
+  const contract: NFLMarketFactoryV3 = validator.validated.data.contract
 
   const sportsdataioExec = Sportsdataio.makeExecute(Sportsdataio.makeConfig(Sportsdataio.NAME))
 

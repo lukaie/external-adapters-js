@@ -446,6 +446,11 @@ const _abi = [
             type: 'uint256',
           },
           {
+            internalType: 'uint256',
+            name: 'resolutionTimestamp',
+            type: 'uint256',
+          },
+          {
             internalType: 'uint256[]',
             name: 'initialOdds',
             type: 'uint256[]',
@@ -472,6 +477,25 @@ const _abi = [
         internalType: 'address',
         name: '',
         type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_marketId',
+        type: 'uint256',
+      },
+    ],
+    name: 'getRewardEndTime',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',

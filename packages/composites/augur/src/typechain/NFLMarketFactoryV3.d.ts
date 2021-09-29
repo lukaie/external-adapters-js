@@ -19,7 +19,7 @@ import { Listener, Provider } from '@ethersproject/providers'
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
 import { TypedEventFilter, TypedEvent, TypedListener } from './commons'
 
-interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
+interface NFLMarketFactoryV3Interface extends ethers.utils.Interface {
   functions: {
     'accumulatedProtocolFee()': FunctionFragment
     'accumulatedSettlementFees(address)': FunctionFragment
@@ -31,21 +31,34 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
     'claimSettlementFees(address)': FunctionFragment
     'claimWinnings(uint256,address)': FunctionFragment
     'collateral()': FunctionFragment
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])': FunctionFragment
+    'eventCount()': FunctionFragment
     'feePot()': FunctionFragment
+    'getEventMarkets(uint256)': FunctionFragment
     'getMarket(uint256)': FunctionFragment
     'getOwner()': FunctionFragment
     'getRewardEndTime(uint256)': FunctionFragment
+    'getSportsEvent(uint256)': FunctionFragment
+    'getSportsEventByIndex(uint256)': FunctionFragment
+    'getVersion()': FunctionFragment
     'isMarketResolved(uint256)': FunctionFragment
+    'linkNode()': FunctionFragment
+    'listOfSportsEvents(uint256)': FunctionFragment
+    'listResolvableEvents()': FunctionFragment
     'marketCount()': FunctionFragment
+    'marketIdToEventIdMapping(uint256)': FunctionFragment
     'mintShares(uint256,uint256,address)': FunctionFragment
     'protocol()': FunctionFragment
     'protocolFee()': FunctionFragment
+    'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)': FunctionFragment
+    'setLinkNode(address)': FunctionFragment
     'setProtocol(address,bool)': FunctionFragment
     'setProtocolFee(uint256)': FunctionFragment
     'setSettlementFee(uint256)': FunctionFragment
     'setStakerFee(uint256)': FunctionFragment
     'settlementFee()': FunctionFragment
     'shareFactor()': FunctionFragment
+    'sportsEvents(uint256)': FunctionFragment
     'stakerFee()': FunctionFragment
     'transferOwnership(address)': FunctionFragment
   }
@@ -66,24 +79,53 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'claimSettlementFees', values: [string]): string
   encodeFunctionData(functionFragment: 'claimWinnings', values: [BigNumberish, string]): string
   encodeFunctionData(functionFragment: 'collateral', values?: undefined): string
+  encodeFunctionData(
+    functionFragment: 'createEvent',
+    values: [
+      BigNumberish,
+      string,
+      BigNumberish,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      [BigNumberish, BigNumberish],
+    ],
+  ): string
+  encodeFunctionData(functionFragment: 'eventCount', values?: undefined): string
   encodeFunctionData(functionFragment: 'feePot', values?: undefined): string
+  encodeFunctionData(functionFragment: 'getEventMarkets', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'getMarket', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'getOwner', values?: undefined): string
   encodeFunctionData(functionFragment: 'getRewardEndTime', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getSportsEvent', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getSportsEventByIndex', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getVersion', values?: undefined): string
   encodeFunctionData(functionFragment: 'isMarketResolved', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'linkNode', values?: undefined): string
+  encodeFunctionData(functionFragment: 'listOfSportsEvents', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'listResolvableEvents', values?: undefined): string
   encodeFunctionData(functionFragment: 'marketCount', values?: undefined): string
+  encodeFunctionData(functionFragment: 'marketIdToEventIdMapping', values: [BigNumberish]): string
   encodeFunctionData(
     functionFragment: 'mintShares',
     values: [BigNumberish, BigNumberish, string],
   ): string
   encodeFunctionData(functionFragment: 'protocol', values?: undefined): string
   encodeFunctionData(functionFragment: 'protocolFee', values?: undefined): string
+  encodeFunctionData(
+    functionFragment: 'resolveEvent',
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish, BigNumberish],
+  ): string
+  encodeFunctionData(functionFragment: 'setLinkNode', values: [string]): string
   encodeFunctionData(functionFragment: 'setProtocol', values: [string, boolean]): string
   encodeFunctionData(functionFragment: 'setProtocolFee', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'setSettlementFee', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'setStakerFee', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'settlementFee', values?: undefined): string
   encodeFunctionData(functionFragment: 'shareFactor', values?: undefined): string
+  encodeFunctionData(functionFragment: 'sportsEvents', values: [BigNumberish]): string
   encodeFunctionData(functionFragment: 'stakerFee', values?: undefined): string
   encodeFunctionData(functionFragment: 'transferOwnership', values: [string]): string
 
@@ -97,42 +139,59 @@ interface AbstractMarketFactoryV3Interface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: 'claimSettlementFees', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'claimWinnings', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'collateral', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'createEvent', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'eventCount', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'feePot', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getEventMarkets', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getMarket', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getOwner', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'getRewardEndTime', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getSportsEvent', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getSportsEventByIndex', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getVersion', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'isMarketResolved', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'linkNode', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'listOfSportsEvents', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'listResolvableEvents', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'marketCount', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'marketIdToEventIdMapping', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'mintShares', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'protocol', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'protocolFee', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'resolveEvent', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'setLinkNode', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setProtocol', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setProtocolFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setSettlementFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'setStakerFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'settlementFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'shareFactor', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'sportsEvents', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'stakerFee', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
 
   events: {
+    'LinkNodeChanged(address)': EventFragment
     'MarketActivated(uint256)': EventFragment
     'MarketCreated(uint256,string[],uint256[])': EventFragment
     'MarketResolved(uint256,address,uint256,string)': EventFragment
     'SharesBurned(uint256,uint256,address)': EventFragment
     'SharesMinted(uint256,uint256,address)': EventFragment
+    'SportsEventCreated(uint256,uint256[],int256[],uint256,uint256,string,string,uint256)': EventFragment
     'WinningsClaimed(uint256,address,uint256,string,uint256,uint256,uint256,address)': EventFragment
   }
 
+  getEvent(nameOrSignatureOrTopic: 'LinkNodeChanged'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketActivated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketCreated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'MarketResolved'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'SharesBurned'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'SharesMinted'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'SportsEventCreated'): EventFragment
   getEvent(nameOrSignatureOrTopic: 'WinningsClaimed'): EventFragment
 }
 
-export class AbstractMarketFactoryV3 extends Contract {
+export class NFLMarketFactoryV3 extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this
   attach(addressOrName: string): this
   deployed(): Promise<this>
@@ -173,7 +232,7 @@ export class AbstractMarketFactoryV3 extends Contract {
     toBlock?: string | number | undefined,
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: AbstractMarketFactoryV3Interface
+  interface: NFLMarketFactoryV3Interface
 
   functions: {
     accumulatedProtocolFee(overrides?: CallOverrides): Promise<[BigNumber]>
@@ -258,9 +317,49 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<[string]>
 
+    createEvent(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    eventCount(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    'eventCount()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
     feePot(overrides?: CallOverrides): Promise<[string]>
 
     'feePot()'(overrides?: CallOverrides): Promise<[string]>
+
+    getEventMarkets(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber[]] & { _markets: BigNumber[] }>
+
+    'getEventMarkets(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber[]] & { _markets: BigNumber[] }>
 
     getMarket(
       _id: BigNumberish,
@@ -339,13 +438,215 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<[BigNumber]>
 
+    getSportsEvent(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+      ]
+    >
+
+    'getSportsEvent(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+      ]
+    >
+
+    getSportsEventByIndex(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _event: [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        }
+        _eventId: BigNumber
+      }
+    >
+
+    'getSportsEventByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _event: [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        }
+        _eventId: BigNumber
+      }
+    >
+
+    getVersion(overrides?: CallOverrides): Promise<[string]>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<[string]>
+
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>
 
+    linkNode(overrides?: CallOverrides): Promise<[string]>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<[string]>
+
+    listOfSportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>
+
+    'listOfSportsEvents(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber]>
+
+    listResolvableEvents(overrides?: CallOverrides): Promise<[BigNumber[]]>
+
+    'listResolvableEvents()'(overrides?: CallOverrides): Promise<[BigNumber[]]>
+
     marketCount(overrides?: CallOverrides): Promise<[BigNumber]>
 
     'marketCount()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    marketIdToEventIdMapping(arg0: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>
+
+    'marketIdToEventIdMapping(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber]>
 
     mintShares(
       _id: BigNumberish,
@@ -368,6 +669,36 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<[BigNumber]>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    resolveEvent(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)'(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     setProtocol(
       _newProtocol: string,
@@ -418,6 +749,38 @@ export class AbstractMarketFactoryV3 extends Contract {
     shareFactor(overrides?: CallOverrides): Promise<[BigNumber]>
 
     'shareFactor()'(overrides?: CallOverrides): Promise<[BigNumber]>
+
+    sportsEvents(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+        status: number
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
+
+    'sportsEvents(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+        status: number
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
 
     stakerFee(overrides?: CallOverrides): Promise<[BigNumber]>
 
@@ -510,9 +873,46 @@ export class AbstractMarketFactoryV3 extends Contract {
 
   'collateral()'(overrides?: CallOverrides): Promise<string>
 
+  createEvent(
+    _eventId: BigNumberish,
+    _homeTeamName: string,
+    _homeTeamId: BigNumberish,
+    _awayTeamName: string,
+    _awayTeamId: BigNumberish,
+    _startTimestamp: BigNumberish,
+    _homeSpread: BigNumberish,
+    _totalScore: BigNumberish,
+    _moneylines: [BigNumberish, BigNumberish],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+    _eventId: BigNumberish,
+    _homeTeamName: string,
+    _homeTeamId: BigNumberish,
+    _awayTeamName: string,
+    _awayTeamId: BigNumberish,
+    _startTimestamp: BigNumberish,
+    _homeSpread: BigNumberish,
+    _totalScore: BigNumberish,
+    _moneylines: [BigNumberish, BigNumberish],
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  eventCount(overrides?: CallOverrides): Promise<BigNumber>
+
+  'eventCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
   feePot(overrides?: CallOverrides): Promise<string>
 
   'feePot()'(overrides?: CallOverrides): Promise<string>
+
+  getEventMarkets(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber[]>
+
+  'getEventMarkets(uint256)'(
+    _eventId: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<BigNumber[]>
 
   getMarket(
     _id: BigNumberish,
@@ -587,13 +987,208 @@ export class AbstractMarketFactoryV3 extends Contract {
     overrides?: CallOverrides,
   ): Promise<BigNumber>
 
+  getSportsEvent(
+    _eventId: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      number,
+      BigNumber[],
+      BigNumber[],
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string,
+      string,
+      BigNumber,
+      BigNumber,
+    ] & {
+      status: number
+      markets: BigNumber[]
+      lines: BigNumber[]
+      estimatedStartTime: BigNumber
+      homeTeamId: BigNumber
+      awayTeamId: BigNumber
+      homeTeamName: string
+      awayTeamName: string
+      homeScore: BigNumber
+      awayScore: BigNumber
+    }
+  >
+
+  'getSportsEvent(uint256)'(
+    _eventId: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      number,
+      BigNumber[],
+      BigNumber[],
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string,
+      string,
+      BigNumber,
+      BigNumber,
+    ] & {
+      status: number
+      markets: BigNumber[]
+      lines: BigNumber[]
+      estimatedStartTime: BigNumber
+      homeTeamId: BigNumber
+      awayTeamId: BigNumber
+      homeTeamName: string
+      awayTeamName: string
+      homeScore: BigNumber
+      awayScore: BigNumber
+    }
+  >
+
+  getSportsEventByIndex(
+    _index: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      },
+      BigNumber,
+    ] & {
+      _event: [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+      _eventId: BigNumber
+    }
+  >
+
+  'getSportsEventByIndex(uint256)'(
+    _index: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [
+      [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      },
+      BigNumber,
+    ] & {
+      _event: [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+      _eventId: BigNumber
+    }
+  >
+
+  getVersion(overrides?: CallOverrides): Promise<string>
+
+  'getVersion()'(overrides?: CallOverrides): Promise<string>
+
   isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
   'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
+  linkNode(overrides?: CallOverrides): Promise<string>
+
+  'linkNode()'(overrides?: CallOverrides): Promise<string>
+
+  listOfSportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+  'listOfSportsEvents(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+  listResolvableEvents(overrides?: CallOverrides): Promise<BigNumber[]>
+
+  'listResolvableEvents()'(overrides?: CallOverrides): Promise<BigNumber[]>
+
   marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
   'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  marketIdToEventIdMapping(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+  'marketIdToEventIdMapping(uint256)'(
+    arg0: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<BigNumber>
 
   mintShares(
     _id: BigNumberish,
@@ -616,6 +1211,36 @@ export class AbstractMarketFactoryV3 extends Contract {
   protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
   'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  resolveEvent(
+    _eventId: BigNumberish,
+    _eventStatus: BigNumberish,
+    _homeTeamId: BigNumberish,
+    _awayTeamId: BigNumberish,
+    _homeScore: BigNumberish,
+    _awayScore: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)'(
+    _eventId: BigNumberish,
+    _eventStatus: BigNumberish,
+    _homeTeamId: BigNumberish,
+    _awayTeamId: BigNumberish,
+    _homeScore: BigNumberish,
+    _awayScore: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  setLinkNode(
+    _newLinkNode: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
+
+  'setLinkNode(address)'(
+    _newLinkNode: string,
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   setProtocol(
     _newProtocol: string,
@@ -666,6 +1291,38 @@ export class AbstractMarketFactoryV3 extends Contract {
   shareFactor(overrides?: CallOverrides): Promise<BigNumber>
 
   'shareFactor()'(overrides?: CallOverrides): Promise<BigNumber>
+
+  sportsEvents(
+    arg0: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+      status: number
+      estimatedStartTime: BigNumber
+      homeTeamId: BigNumber
+      awayTeamId: BigNumber
+      homeTeamName: string
+      awayTeamName: string
+      homeScore: BigNumber
+      awayScore: BigNumber
+    }
+  >
+
+  'sportsEvents(uint256)'(
+    arg0: BigNumberish,
+    overrides?: CallOverrides,
+  ): Promise<
+    [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+      status: number
+      estimatedStartTime: BigNumber
+      homeTeamId: BigNumber
+      awayTeamId: BigNumber
+      homeTeamName: string
+      awayTeamName: string
+      homeScore: BigNumber
+      awayScore: BigNumber
+    }
+  >
 
   stakerFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -754,9 +1411,46 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<string>
 
+    createEvent(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: CallOverrides,
+    ): Promise<BigNumber[]>
+
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: CallOverrides,
+    ): Promise<BigNumber[]>
+
+    eventCount(overrides?: CallOverrides): Promise<BigNumber>
+
+    'eventCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
     feePot(overrides?: CallOverrides): Promise<string>
 
     'feePot()'(overrides?: CallOverrides): Promise<string>
+
+    getEventMarkets(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber[]>
+
+    'getEventMarkets(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber[]>
 
     getMarket(
       _id: BigNumberish,
@@ -831,13 +1525,208 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<BigNumber>
 
+    getSportsEvent(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
+
+    'getSportsEvent(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        number,
+        BigNumber[],
+        BigNumber[],
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        BigNumber,
+        BigNumber,
+      ] & {
+        status: number
+        markets: BigNumber[]
+        lines: BigNumber[]
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
+
+    getSportsEventByIndex(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _event: [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        }
+        _eventId: BigNumber
+      }
+    >
+
+    'getSportsEventByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [
+        [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        },
+        BigNumber,
+      ] & {
+        _event: [
+          number,
+          BigNumber[],
+          BigNumber[],
+          BigNumber,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          BigNumber,
+          BigNumber,
+        ] & {
+          status: number
+          markets: BigNumber[]
+          lines: BigNumber[]
+          estimatedStartTime: BigNumber
+          homeTeamId: BigNumber
+          awayTeamId: BigNumber
+          homeTeamName: string
+          awayTeamName: string
+          homeScore: BigNumber
+          awayScore: BigNumber
+        }
+        _eventId: BigNumber
+      }
+    >
+
+    getVersion(overrides?: CallOverrides): Promise<string>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<string>
+
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<boolean>
 
+    linkNode(overrides?: CallOverrides): Promise<string>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<string>
+
+    listOfSportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'listOfSportsEvents(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    listResolvableEvents(overrides?: CallOverrides): Promise<BigNumber[]>
+
+    'listResolvableEvents()'(overrides?: CallOverrides): Promise<BigNumber[]>
+
     marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
     'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    marketIdToEventIdMapping(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'marketIdToEventIdMapping(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
 
     mintShares(
       _id: BigNumberish,
@@ -860,6 +1749,30 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    resolveEvent(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)'(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<void>
+
+    setLinkNode(_newLinkNode: string, overrides?: CallOverrides): Promise<void>
+
+    'setLinkNode(address)'(_newLinkNode: string, overrides?: CallOverrides): Promise<void>
 
     setProtocol(
       _newProtocol: string,
@@ -893,6 +1806,38 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'shareFactor()'(overrides?: CallOverrides): Promise<BigNumber>
 
+    sportsEvents(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+        status: number
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
+
+    'sportsEvents(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<
+      [number, BigNumber, BigNumber, BigNumber, string, string, BigNumber, BigNumber] & {
+        status: number
+        estimatedStartTime: BigNumber
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        homeScore: BigNumber
+        awayScore: BigNumber
+      }
+    >
+
     stakerFee(overrides?: CallOverrides): Promise<BigNumber>
 
     'stakerFee()'(overrides?: CallOverrides): Promise<BigNumber>
@@ -903,6 +1848,8 @@ export class AbstractMarketFactoryV3 extends Contract {
   }
 
   filters: {
+    LinkNodeChanged(newLinkNode: null): TypedEventFilter<[string], { newLinkNode: string }>
+
     MarketActivated(id: null): TypedEventFilter<[BigNumber], { id: BigNumber }>
 
     MarketCreated(
@@ -945,6 +1892,29 @@ export class AbstractMarketFactoryV3 extends Contract {
     ): TypedEventFilter<
       [BigNumber, BigNumber, string],
       { id: BigNumber; amount: BigNumber; receiver: string }
+    >
+
+    SportsEventCreated(
+      id: null,
+      markets: null,
+      lines: null,
+      homeTeamId: null,
+      awayTeamId: null,
+      homeTeamName: null,
+      awayTeamName: null,
+      estimatedStartTime: null,
+    ): TypedEventFilter<
+      [BigNumber, BigNumber[], BigNumber[], BigNumber, BigNumber, string, string, BigNumber],
+      {
+        id: BigNumber
+        markets: BigNumber[]
+        lines: BigNumber[]
+        homeTeamId: BigNumber
+        awayTeamId: BigNumber
+        homeTeamName: string
+        awayTeamName: string
+        estimatedStartTime: BigNumber
+      }
     >
 
     WinningsClaimed(
@@ -1054,9 +2024,46 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<BigNumber>
 
+    createEvent(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    eventCount(overrides?: CallOverrides): Promise<BigNumber>
+
+    'eventCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
     feePot(overrides?: CallOverrides): Promise<BigNumber>
 
     'feePot()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    getEventMarkets(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getEventMarkets(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
 
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -1073,13 +2080,47 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<BigNumber>
 
+    getSportsEvent(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getSportsEvent(uint256)'(_eventId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    getSportsEventByIndex(_index: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'getSportsEventByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
+
+    getVersion(overrides?: CallOverrides): Promise<BigNumber>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<BigNumber>
+
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     'isMarketResolved(uint256)'(_id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
+    linkNode(overrides?: CallOverrides): Promise<BigNumber>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    listOfSportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'listOfSportsEvents(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    listResolvableEvents(overrides?: CallOverrides): Promise<BigNumber>
+
+    'listResolvableEvents()'(overrides?: CallOverrides): Promise<BigNumber>
+
     marketCount(overrides?: CallOverrides): Promise<BigNumber>
 
     'marketCount()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    marketIdToEventIdMapping(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'marketIdToEventIdMapping(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
 
     mintShares(
       _id: BigNumberish,
@@ -1102,6 +2143,36 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<BigNumber>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    resolveEvent(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)'(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
     setProtocol(
       _newProtocol: string,
@@ -1152,6 +2223,10 @@ export class AbstractMarketFactoryV3 extends Contract {
     shareFactor(overrides?: CallOverrides): Promise<BigNumber>
 
     'shareFactor()'(overrides?: CallOverrides): Promise<BigNumber>
+
+    sportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
+
+    'sportsEvents(uint256)'(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
     stakerFee(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -1260,9 +2335,49 @@ export class AbstractMarketFactoryV3 extends Contract {
 
     'collateral()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
+    createEvent(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+      _eventId: BigNumberish,
+      _homeTeamName: string,
+      _homeTeamId: BigNumberish,
+      _awayTeamName: string,
+      _awayTeamId: BigNumberish,
+      _startTimestamp: BigNumberish,
+      _homeSpread: BigNumberish,
+      _totalScore: BigNumberish,
+      _moneylines: [BigNumberish, BigNumberish],
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    eventCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'eventCount()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
     feePot(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'feePot()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    getEventMarkets(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    'getEventMarkets(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     getMarket(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -1285,6 +2400,27 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
 
+    getSportsEvent(_eventId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getSportsEvent(uint256)'(
+      _eventId: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    getSportsEventByIndex(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    'getSportsEventByIndex(uint256)'(
+      _index: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    getVersion(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'getVersion()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
     isMarketResolved(_id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'isMarketResolved(uint256)'(
@@ -1292,9 +2428,34 @@ export class AbstractMarketFactoryV3 extends Contract {
       overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>
 
+    linkNode(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'linkNode()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    listOfSportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'listOfSportsEvents(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    listResolvableEvents(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'listResolvableEvents()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
     marketCount(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'marketCount()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    marketIdToEventIdMapping(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
+
+    'marketIdToEventIdMapping(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     mintShares(
       _id: BigNumberish,
@@ -1317,6 +2478,36 @@ export class AbstractMarketFactoryV3 extends Contract {
     protocolFee(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'protocolFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    resolveEvent(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'resolveEvent(uint256,uint8,uint256,uint256,uint256,uint256)'(
+      _eventId: BigNumberish,
+      _eventStatus: BigNumberish,
+      _homeTeamId: BigNumberish,
+      _awayTeamId: BigNumberish,
+      _homeScore: BigNumberish,
+      _awayScore: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    setLinkNode(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+
+    'setLinkNode(address)'(
+      _newLinkNode: string,
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     setProtocol(
       _newProtocol: string,
@@ -1367,6 +2558,13 @@ export class AbstractMarketFactoryV3 extends Contract {
     shareFactor(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     'shareFactor()'(overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    sportsEvents(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+
+    'sportsEvents(uint256)'(
+      arg0: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     stakerFee(overrides?: CallOverrides): Promise<PopulatedTransaction>
 

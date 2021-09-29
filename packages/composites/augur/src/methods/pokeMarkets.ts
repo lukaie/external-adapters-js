@@ -5,7 +5,7 @@ import { DateTime } from 'luxon'
 
 import { Config } from '../config'
 import { getContract } from './index'
-import { AggregatorV3Interface__factory, CryptoMarketFactory } from '../typechain'
+import { AggregatorV3Interface__factory, CryptoMarketFactoryV3 } from '../typechain'
 
 class RoundManagement {
   readonly phase: BigNumber
@@ -36,7 +36,7 @@ class RoundManagement {
   }
 }
 
-async function getNextWeekResolutionTimestamp(contract: CryptoMarketFactory): Promise<number> {
+async function getNextWeekResolutionTimestamp(contract: CryptoMarketFactoryV3): Promise<number> {
   const contractNextResolutionTime = await contract.nextResolutionTime()
   const now = Math.floor(DateTime.now().setZone('America/New_York').toSeconds())
   if (contractNextResolutionTime.gt(now)) {
@@ -90,7 +90,7 @@ export async function execute(
     'crypto',
     validator.validated.data.contractAddress,
     config.signer,
-  ) as unknown as CryptoMarketFactory
+  ) as unknown as CryptoMarketFactoryV3
 
   await pokeMarkets(contract, context, config)
 
@@ -99,7 +99,7 @@ export async function execute(
 
 async function fetchResolutionRoundIds(
   resolutionTime: number,
-  contract: CryptoMarketFactory,
+  contract: CryptoMarketFactoryV3,
   _: AdapterContext,
   config: Config,
 ): Promise<RoundDataForCoin[]> {
@@ -164,7 +164,11 @@ async function createAndResolveMarkets(
   }
 }
 
-async function pokeMarkets(contract: CryptoMarketFactory, context: AdapterContext, config: Config) {
+async function pokeMarkets(
+  contract: CryptoMarketFactoryV3,
+  context: AdapterContext,
+  config: Config,
+) {
   const resolutionTime: BigNumber = await contract.nextResolutionTime()
   const nextResolutionTime = await getNextWeekResolutionTimestamp(contract)
   if (nextResolutionTime > 0) {
