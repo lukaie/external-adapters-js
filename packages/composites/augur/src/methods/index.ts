@@ -5,6 +5,7 @@ import {
   MLBMarketFactory,
   MLBMarketFactory__factory,
   MMAMarketFactory,
+  MMAMarketFactory__factory,
   NBAMarketFactory,
   NBAMarketFactory__factory,
   NFLMarketFactory,
@@ -49,7 +50,7 @@ export function getContract(
   if (identifier === 'nfl') return NFLMarketFactory__factory.connect(address, signer)
   if (identifier === 'nba') return NBAMarketFactory__factory.connect(address, signer)
   if (identifier === 'mlb') return MLBMarketFactory__factory.connect(address, signer)
-  if (identifier === 'mma') return MLBMarketFactory__factory.connect(address, signer)
+  if (identifier === 'mma') return MMAMarketFactory__factory.connect(address, signer)
   if (identifier === 'crypto') return CryptoMarketFactory__factory.connect(address, signer)
   else throw Error(`Unsupported identifier ${identifier}`)
 }
