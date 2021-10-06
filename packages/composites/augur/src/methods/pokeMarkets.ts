@@ -44,7 +44,7 @@ async function buildPokeArgs(
   signer: Signer,
 ): Promise<PokeArgs[]> {
   const args: PokeArgs[] = []
-  const coins: Coin[] = await contract.getCoins() // NOTE: this skips the 0th coin, so indices are all off by one
+  const coins: Coin[] = (await contract.getCoins()).slice(1)
   for (let i = 0; i < coins.length; i++) {
     const coinIndex = i + 1
     const coin = coins[i]
@@ -93,7 +93,7 @@ async function pokeMarkets(
 async function getNextResolutionTime(resolutionTime: BigNumber): Promise<number | null> {
   const now = Math.floor(DateTime.now().setZone('America/New_York').toSeconds())
   if (resolutionTime.gt(now)) {
-    Logger.warn(`Augur: Next resolution time ${resolutionTime} is in the future`)
+    Logger.warn(`Augur: Next resolution time ${resolutionTime.toString()} is in the future`)
 
     return null
   }
@@ -101,7 +101,7 @@ async function getNextResolutionTime(resolutionTime: BigNumber): Promise<number 
   return getUpcomingFriday4pmET()
 }
 
-interface Coin {
+export interface Coin {
   name: string
   feed: string
   currentMarket: BigNumber
@@ -147,7 +147,7 @@ async function fetchResolutionRoundId(
   return round.id
 }
 
-class RoundManagement {
+export class RoundManagement {
   readonly phase: BigNumber
   readonly justRound: BigNumber
 
