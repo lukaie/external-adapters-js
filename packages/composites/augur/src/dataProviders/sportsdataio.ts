@@ -633,6 +633,11 @@ export const resolveFight: Execute = async (input, context) => {
 
   const winners = fight.Fighters.filter((fighter) => fighter.Active && fighter.Winner)
 
+  // We expect fighters not to change once a fight is scheduled. This will pick up the case where it
+  // changed before scheduling, but it's important to double-check because sometimes the change
+  // happens after the fight is scheduled.
+  const weird = fight.Fighters.length !== 2
+
   const draw = winners.length !== 1
   let winnerId = 0
   let fighters = fight.Fighters
@@ -662,6 +667,7 @@ export const resolveFight: Execute = async (input, context) => {
     fighterB: fighters[1].FighterId,
     winnerId,
     draw,
+    weird,
   }
 
   return Requester.success(input.id, {
