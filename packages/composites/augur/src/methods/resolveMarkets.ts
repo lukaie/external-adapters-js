@@ -192,10 +192,10 @@ const resolveFights = async (
   for (const event of events.filter((event) => event.weird)) {
     Logger.debug(`Augur: Checking weird event ${event.id} against market`, event)
     const { homeTeamId, awayTeamId } = await contract.getSportsEvent(event.id)
-    // The active fighters changed so we classify this fight as Cancalled, which resolves as No Contest.
+    // The active fighters changed so we classify this fight as Cancelled, which resolves as No Contest.
     if (!homeTeamId.eq(event.fighterA) || !awayTeamId.eq(event.fighterB)) {
       event.status = FightStatus.Cancelled
-      Logger.debug('Augur: forcing event status to Canceled', event)
+      Logger.debug('Augur: forcing event status to Cancelled', event)
     }
   }
 
