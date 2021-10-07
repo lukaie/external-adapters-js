@@ -26,13 +26,16 @@ export interface ResolveFight {
   fighterB: number
   winnerId?: number
   draw: boolean
+  weird: boolean
 }
 
-const statusCompleted = [
-  4, // Cancelled
-  2, // Final
-  3, // Postponed
-]
+enum FightStatus {
+  Final = 2,
+  Postponed = 3,
+  Cancelled = 4,
+}
+
+const statusCompleted = [FightStatus.Cancelled, FightStatus.Final, FightStatus.Postponed]
 
 export const execute: ExecuteWithConfig<Config> = async (input, context, config) => {
   const validator = new Validator(input, resolveParams)
@@ -182,6 +185,15 @@ const resolveFights = async (
     } catch (e) {
       Logger.error(e)
     }
+  }
+
+  // If the event from sportsdataio doesn't match the format we expect, check it against contract.
+  // Note that this code is destructive to the events array's contents.
+  for (const event of events.filter((event) => event.weird)) {
+    const { homeTeamId, awayTeamId } = await contract.getSportsEvent(event.id)
+    // The active fighters changed so we classify this fight as Cancalled, which resolves as No Contest.
+    if (!homeTeamId.eq(event.fighterA) || !awayTeamId.eq(event.fighterB))
+      event.status = FightStatus.Cancelled
   }
 
   // Filters out events that aren't yet ready to resolve.
