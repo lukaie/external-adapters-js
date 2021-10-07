@@ -190,14 +190,18 @@ const resolveFights = async (
   // If the event from sportsdataio doesn't match the format we expect, check it against contract.
   // Note that this code is destructive to the events array's contents.
   for (const event of events.filter((event) => event.weird)) {
+    Logger.debug(`Augur: Checking weird event ${event.id} against market`, event)
     const { homeTeamId, awayTeamId } = await contract.getSportsEvent(event.id)
     // The active fighters changed so we classify this fight as Cancalled, which resolves as No Contest.
-    if (!homeTeamId.eq(event.fighterA) || !awayTeamId.eq(event.fighterB))
+    if (!homeTeamId.eq(event.fighterA) || !awayTeamId.eq(event.fighterB)) {
       event.status = FightStatus.Cancelled
+      Logger.debug('Augur: forcing event status to Canceled', event)
+    }
   }
 
   // Filters out events that aren't yet ready to resolve.
   const eventReadyToResolve = events.filter(({ status }) => statusCompleted.includes(status))
+  Logger.debug(`Augur: Ready to resolve ${eventReadyToResolve.length} markets.`)
 
   let failed = 0
   let succeeded = 0
