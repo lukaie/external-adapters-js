@@ -31,7 +31,7 @@ interface NBAMarketFactoryV3Interface extends ethers.utils.Interface {
     'claimSettlementFees(address)': FunctionFragment
     'claimWinnings(uint256,address)': FunctionFragment
     'collateral()': FunctionFragment
-    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])': FunctionFragment
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256)': FunctionFragment
     'eventCount()': FunctionFragment
     'feePot()': FunctionFragment
     'getEventMarkets(uint256)': FunctionFragment
@@ -81,17 +81,7 @@ interface NBAMarketFactoryV3Interface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'collateral', values?: undefined): string
   encodeFunctionData(
     functionFragment: 'createEvent',
-    values: [
-      BigNumberish,
-      string,
-      BigNumberish,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      [BigNumberish, BigNumberish],
-    ],
+    values: [BigNumberish, string, BigNumberish, string, BigNumberish, BigNumberish, BigNumberish],
   ): string
   encodeFunctionData(functionFragment: 'eventCount', values?: undefined): string
   encodeFunctionData(functionFragment: 'feePot', values?: undefined): string
@@ -325,12 +315,10 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>
 
-    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256)'(
       _eventId: BigNumberish,
       _homeTeamName: string,
       _homeTeamId: BigNumberish,
@@ -338,8 +326,6 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>
 
@@ -881,12 +867,10 @@ export class NBAMarketFactoryV3 extends Contract {
     _awayTeamId: BigNumberish,
     _startTimestamp: BigNumberish,
     _homeSpread: BigNumberish,
-    _totalScore: BigNumberish,
-    _moneylines: [BigNumberish, BigNumberish],
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>
 
-  'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+  'createEvent(uint256,string,uint256,string,uint256,uint256,int256)'(
     _eventId: BigNumberish,
     _homeTeamName: string,
     _homeTeamId: BigNumberish,
@@ -894,8 +878,6 @@ export class NBAMarketFactoryV3 extends Contract {
     _awayTeamId: BigNumberish,
     _startTimestamp: BigNumberish,
     _homeSpread: BigNumberish,
-    _totalScore: BigNumberish,
-    _moneylines: [BigNumberish, BigNumberish],
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>
 
@@ -1419,12 +1401,10 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: CallOverrides,
     ): Promise<BigNumber[]>
 
-    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256)'(
       _eventId: BigNumberish,
       _homeTeamName: string,
       _homeTeamId: BigNumberish,
@@ -1432,8 +1412,6 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: CallOverrides,
     ): Promise<BigNumber[]>
 
@@ -2032,12 +2010,10 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>
 
-    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256)'(
       _eventId: BigNumberish,
       _homeTeamName: string,
       _homeTeamId: BigNumberish,
@@ -2045,8 +2021,6 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>
 
@@ -2343,12 +2317,10 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>
 
-    'createEvent(uint256,string,uint256,string,uint256,uint256,int256,int256,int256[2])'(
+    'createEvent(uint256,string,uint256,string,uint256,uint256,int256)'(
       _eventId: BigNumberish,
       _homeTeamName: string,
       _homeTeamId: BigNumberish,
@@ -2356,8 +2328,6 @@ export class NBAMarketFactoryV3 extends Contract {
       _awayTeamId: BigNumberish,
       _startTimestamp: BigNumberish,
       _homeSpread: BigNumberish,
-      _totalScore: BigNumberish,
-      _moneylines: [BigNumberish, BigNumberish],
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>
 
