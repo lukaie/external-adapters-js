@@ -109,7 +109,7 @@ const createTeam = async (
     const event = events[i]
     try {
       let tx: ContractTransaction
-      if (isNFL(contract, sport) || isNBA(contract, sport)) {
+      if (isNFL(contract, sport)) {
         tx = await contract.createEvent(
           event.id,
           event.homeTeamName,
@@ -120,6 +120,17 @@ const createTeam = async (
           Math.round(event.homeSpread * 10),
           Math.round(event.totalScore * 10),
           event.moneylines as [number, number],
+          { nonce },
+        )
+      } else if (isNBA(contract, sport)) {
+        tx = await contract.createEvent(
+          event.id,
+          event.homeTeamName,
+          event.homeTeamId,
+          event.awayTeamName,
+          event.awayTeamId,
+          Math.floor(event.startTime / 1000),
+          Math.round(event.homeSpread * 10),
           { nonce },
         )
       } else if (isMLB(contract, sport) || isMMA(contract, sport)) {
